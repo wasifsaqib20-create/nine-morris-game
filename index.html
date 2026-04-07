@@ -3,64 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Nine Men Morris - Professional Arena</title>
+<title>Nine Men Morris Pro - Real Money</title>
 <style>
 :root {
-    --g: #C8A84B; --g2: #E8C96A; --bg: #0a0a0a; --card: #161616; --green: #2E7D32; --wa: #25D366;
+    --g: #C8A84B; --g2: #E8C96A; --bg: #0a0e0a; --card: #161a16; --wa: #25D366; --r: #ef5350;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; user-select: none; }
-body { background: var(--bg); font-family: 'Arial', sans-serif; color: #fff; padding-bottom: 80px; overflow-x: hidden; }
+body { background: var(--bg); font-family: 'Arial', sans-serif; color: #fff; padding-bottom: 75px; overflow-x: hidden; }
 
-/* Header */
-.tnav { background: #000; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100; }
-.tlogo { font-size: 18px; font-weight: 900; color: var(--g); text-transform: uppercase; }
-.tbal { text-align: right; }
-.tbal span { color: var(--g); font-weight: bold; font-size: 16px; }
+/* Navigation */
+.tnav { background: #111; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; }
+.tlogo { font-size: 18px; font-weight: 900; color: var(--g); letter-spacing: 1px; }
+.uav { width: 35px; height: 35px; background: var(--g); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #000; font-weight: bold; }
 
 /* Tabs */
-.page { display: none; animation: slideUp 0.3s ease-out; padding: 15px; }
+.page { display: none; animation: fadeIn 0.3s ease; padding: 15px; }
 .page.active { display: block; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Game Board */
-.ghd { display: flex; justify-content: space-between; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 12px; border: 1px solid #333; }
-.bw { background: #1a1a1a; border: 2px solid #333; border-radius: 20px; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-canvas#gc { width: 100%; height: auto; display: block; border-radius: 10px; touch-action: none; }
+/* Game UI */
+.ghd { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; border: 1px solid #222; }
+.bw { background: linear-gradient(145deg, #1e1a10, #0d0b06); border: 2px solid #333; border-radius: 20px; padding: 10px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+canvas#gc { width: 100%; height: auto; display: block; touch-action: none; border-radius: 12px; }
 
 /* Controls */
-.ccard { background: var(--card); border-radius: 15px; padding: 15px; margin-top: 15px; border: 1px solid #222; }
+.ccard { background: var(--card); border-radius: 18px; padding: 15px; margin-top: 15px; border: 1px solid #222; }
 .btn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 10px 0; }
-.ch { background: #222; border: 1px solid #444; padding: 10px 5px; border-radius: 8px; text-align: center; font-size: 12px; color: var(--g); cursor: pointer; transition: 0.2s; }
+.ch { background: #222; border: 1px solid #444; padding: 10px 5px; border-radius: 10px; text-align: center; font-size: 12px; color: var(--g); cursor: pointer; transition: 0.2s; }
 .ch.on { background: var(--g); color: #000; border-color: var(--g); font-weight: bold; }
-.bgo { background: linear-gradient(135deg, var(--g), var(--g2)); color: #000; border: none; padding: 14px; width: 100%; border-radius: 10px; font-weight: 900; cursor: pointer; margin-top: 10px; text-transform: uppercase; font-size: 14px; }
+.bgo { background: linear-gradient(135deg, var(--g), var(--g2)); color: #000; border: none; padding: 14px; width: 100%; border-radius: 12px; font-weight: 900; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
 
 /* Payment Methods */
-.pmb { background: #111; border: 1px solid #333; border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; cursor: pointer; position: relative; }
-.pmb.sel { border-color: var(--g); background: rgba(200,168,75,0.05); }
-.p-logo { width: 50px; height: 30px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #fff; }
+.pm-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+.pmb { background: #111; border: 1px solid #333; border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.pmb.sel { border-color: var(--g); background: rgba(200,168,75,0.1); }
+.p-ico { width: 35px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #fff; }
 
 /* Bottom Nav */
 .bnav { position: fixed; bottom: 0; left: 0; right: 0; background: #000; border-top: 1px solid #222; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
-.bni { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #666; cursor: pointer; width: 20%; }
+.bni { display: flex; flex-direction: column; align-items: center; font-size: 10px; color: #666; cursor: pointer; width: 20%; }
 .bni.on { color: var(--g); }
 .bico { font-size: 22px; margin-bottom: 4px; }
+.supp-btn { background: var(--wa); color: #fff; border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; margin-top: -25px; border: 4px solid #000; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 
-/* Spin Wheel */
-.spin-container { text-align: center; margin: 20px 0; }
-#spinCv { width: 260px; height: 260px; border: 5px solid var(--g); border-radius: 50%; background: #111; }
+/* Spin */
+#spinCv { display: block; margin: 15px auto; width: 260px; height: 260px; border: 6px solid var(--g); border-radius: 50%; }
 
-/* WhatsApp Floating */
-.waf { position: fixed; bottom: 85px; right: 20px; width: 55px; height: 55px; background: var(--wa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.5); z-index: 999; }
+/* Transaction Hist */
+.hi { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; font-size: 12px; }
+.h-dep { color: #42A5F5; }
+
+/* Floating WA */
+.waf { position: fixed; bottom: 85px; right: 20px; width: 55px; height: 55px; background: var(--wa); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.4); z-index: 999; }
 </style>
 </head>
 <body>
 
 <div class="tnav">
     <div class="tlogo">NINE MEN <b>MORRIS</b></div>
-    <div class="tbal">
+    <div style="text-align: right;">
         <div style="font-size: 10px; color: #888;">BALANCE</div>
-        <span>Rs <span id="balEl">100</span></span>
+        <div style="color: var(--g); font-weight: bold;">Rs <span id="balEl">100</span></div>
     </div>
+    <div class="uav" id="topAv">B</div>
 </div>
 
 <!-- Home Page -->
@@ -68,12 +73,12 @@ canvas#gc { width: 100%; height: auto; display: block; border-radius: 10px; touc
     <div class="ghd">
         <span>PHASE: <b id="phT" style="color:var(--g)">PLACING</b></span>
         <span>TURN: <b id="tnT" style="color:var(--g)">Your Turn</b></span>
+        <span>AI: <b style="color:var(--g)">MINIMAX</b></span>
     </div>
-    
     <div class="bw"><canvas id="gc" width="490" height="490"></canvas></div>
-
+    
     <div class="ccard">
-        <p style="font-size:11px; color:#888; margin-bottom:10px;">BET AMOUNT (RS)</p>
+        <div style="font-size: 11px; color: #888; margin-bottom: 8px;">BET AMOUNT (RS)</div>
         <div class="btn-grid">
             <div class="ch on" onclick="setBet(0, this)">0</div>
             <div class="ch" onclick="setBet(20, this)">20</div>
@@ -84,114 +89,132 @@ canvas#gc { width: 100%; height: auto; display: block; border-radius: 10px; touc
             <div class="ch" onclick="setBet(1000, this)">1000</div>
             <div class="ch" onclick="setBet(5000, this)">5000</div>
         </div>
-        <div style="display:flex; gap:10px;">
-            <button class="bgo" onclick="startGame()">🕹️ Start Game</button>
-            <button class="bgo" style="background:#222; color:#fff; border:1px solid #444;" onclick="resetGame()">🔄 Restart</button>
+        <div style="display: flex; gap: 10px;">
+            <button class="bgo" onclick="startGame()">🕹️ START GAME</button>
+            <button class="bgo" style="background:#222; color:#fff; border:1px solid #444;" onclick="resetGame()">🔄 RESTART</button>
         </div>
+    </div>
+
+    <div class="ccard">
+        <h4 style="font-size: 13px; color: var(--g); margin-bottom: 10px;">📜 TRANSACTION HISTORY</h4>
+        <div id="hist" class="hi"><span class="h-dep">BONUS +Rs100 Welcome!</span><span>01:30 PM</span></div>
     </div>
 </div>
 
 <!-- Offers Page -->
 <div id="pg-offers" class="page">
-    <h2 style="color:var(--g); margin-bottom:15px;">🎁 Exclusive Offers</h2>
-    <div class="ccard" style="border:1px solid var(--g)">
+    <h2 style="color: var(--g); margin-bottom: 15px;">🎁 Exclusive Offers</h2>
+    <div class="ccard" style="border: 1px solid var(--g); background: linear-gradient(135deg, #1a1505, #111);">
         <h3>Welcome Bonus!</h3>
-        <p style="color:#888; font-size:12px;">Get Rs 100 Free on your first signup.</p>
-        <button class="bgo" onclick="alert('Bonus already credited!')">Claim Now</button>
+        <p style="font-size: 12px; color: #aaa; margin: 5px 0 10px;">Get Rs 100 FREE on signup</p>
+        <button class="bgo" onclick="alert('Bonus already added!')">Claim Now</button>
     </div>
     <div class="ccard">
-        <h4>Refer & Earn</h4>
-        <p style="color:#888; font-size:12px;">Get Rs 20 for every friend who joins.</p>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div><h4>Refer & Earn</h4><p style="font-size:11px; color:#888;">Rs 20 per friend</p></div>
+            <div style="background:var(--g); color:#000; padding:2px 8px; border-radius:5px; font-size:10px;">Rs 20</div>
+        </div>
     </div>
 </div>
 
 <!-- Deposit Page -->
 <div id="pg-deposit" class="page">
-    <h2 style="margin-bottom:15px;">Add Cash</h2>
-    <div class="pmb sel" onclick="selectPay(this)">
-        <div class="p-logo" style="background:#CC0000;">JazzCash</div>
-        <div><b>JazzCash</b><br><small style="color:#888;">Instant Deposit</small></div>
+    <h2 style="margin-bottom: 15px;">Add Cash</h2>
+    <div class="pm-row">
+        <div class="pmb sel" onclick="selP(this)">
+            <div class="p-ico" style="background:#cc0000;">Jazz</div><div>JazzCash</div>
+        </div>
+        <div class="pmb" onclick="selP(this)">
+            <div class="p-ico" style="background:#00A94F;">Easy</div><div>EasyPaisa</div>
+        </div>
     </div>
-    <div class="pmb" onclick="selectPay(this)">
-        <div class="p-logo" style="background:#00A94F;">EasyPaisa</div>
-        <div><b>EasyPaisa</b><br><small style="color:#888;">Instant Deposit</small></div>
-    </div>
-    
     <div class="ccard">
-        <p style="font-size:11px; margin-bottom:10px;">SELECT AMOUNT</p>
         <div class="btn-grid">
             <div class="ch" onclick="setDA(200)">200</div>
             <div class="ch" onclick="setDA(500)">500</div>
             <div class="ch" onclick="setDA(1000)">1000</div>
             <div class="ch" onclick="setDA(5000)">5000</div>
         </div>
-        <button class="bgo" style="background:var(--green); color:#fff;" onclick="doDeposit()">Deposit Now</button>
+        <input type="number" id="dAmt" placeholder="Min 100 ~ Max 100,000" style="width:100%; padding:12px; background:#111; border:1px solid #333; color:#fff; border-radius:10px; margin-top:10px;">
+        <button class="bgo" style="background:#2E7D32; color:#fff;" onclick="doDep()">Deposit Now</button>
     </div>
 </div>
 
 <!-- Support Page -->
 <div id="pg-support" class="page">
-    <div class="ccard" style="background:var(--green); border:none;">
+    <div class="ccard" style="background: #1B5E20; color: #fff; border:none;">
         <h3>Customer Support 🟢</h3>
-        <p style="font-size:12px;">AI Assistant is online 24/7</p>
+        <p style="font-size: 11px;">AI Assistant • 24/7 • Online</p>
     </div>
-    <div class="ccard" style="height:200px; overflow-y:auto; font-size:14px; color:#aaa;">
-        <div style="margin-bottom:10px;">AI: Hello! How can I help you today? 😊</div>
+    <div class="ccard" id="chat" style="height: 220px; overflow-y:auto; font-size: 14px; color: #ccc;">
+        <div><b>AI:</b> Hello! Welcome to Nine Men Morris Support! 👋</div>
+        <div style="margin-top:10px;"><b>AI:</b> How can I help you today? 😊</div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:10px;">
+        <input type="text" placeholder="Type Hi..." style="flex:1; padding:12px; background:#222; border:1px solid #444; border-radius:10px; color:#fff;">
+        <button class="bgo" style="width:auto; margin-top:0; padding:0 20px;">Send</button>
     </div>
     <button class="bgo" onclick="window.open('https://wa.me/923297877948')">Chat on WhatsApp</button>
 </div>
 
 <!-- Profile Page -->
 <div id="pg-profile" class="page">
-    <div style="text-align:center; margin: 20px 0;">
-        <div style="width:80px; height:80px; background:var(--g); border-radius:50%; margin:0 auto; display:flex; align-items:center; justify-content:center; font-size:30px; color:#000; font-weight:bold;">B</div>
-        <h2 style="margin-top:10px;">Banubhai</h2>
-        <p style="color:#888; font-size:12px;">mrbanujunior@gmail.com</p>
+    <div style="text-align: center; margin: 15px 0;">
+        <div class="uav" style="width: 80px; height: 80px; margin: 0 auto; font-size: 32px;">B</div>
+        <h2 style="margin-top: 10px;">Banubhai</h2>
+        <p style="color:#888; font-size: 12px;">mrbanujunior@gmail.com</p>
     </div>
-    
-    <div class="ccard" style="text-align:center;">
-        <p style="color:var(--g); font-weight:bold; margin-bottom:10px;">🎡 Lucky Spin Wheel</p>
-        <canvas id="spinCv" width="260" height="260"></canvas>
-        <button class="bgo" id="spinBtn" onclick="startSpin()">Spin Now!</button>
-        <p id="spinTimer" style="font-size:11px; color:#888; margin-top:10px;"></p>
+    <div class="ccard">
+        <div style="display: flex; justify-content: space-around; text-align: center;">
+            <div><b id="profBal">100</b><br><small>Balance</small></div>
+            <div><b>0</b><br><small>Wins</small></div>
+            <div><b>0</b><br><small>Games</small></div>
+        </div>
+    </div>
+    <!-- Spin -->
+    <div class="ccard" style="text-align: center;">
+        <h4 style="color:var(--g)">🎡 Lucky Spin Wheel</h4>
+        <div id="spinBox" style="position:relative;">
+            <div style="position:absolute; top:0; left:50%; transform:translateX(-50%); z-index:10; color:var(--g); font-size:24px;">▼</div>
+            <canvas id="spinCv" width="260" height="260"></canvas>
+        </div>
+        <p id="sStat" style="font-size:11px; color:var(--g); margin-bottom:8px;">Ready to spin!</p>
+        <button class="bgo" id="spinBtn" onclick="doSpin()">Spin Now!</button>
     </div>
 </div>
 
-<!-- WhatsApp Float -->
 <a href="https://wa.me/923297877948" class="waf">
     <svg width="30" height="30" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <div class="bnav">
-    <div class="bni on" onclick="sw(this,'home')"><span class="bico">🏠</span>Home</div>
-    <div class="bni" onclick="sw(this,'offers')"><span class="bico">🎁</span>Offers</div>
-    <div class="bni" onclick="sw(this,'deposit')"><span class="bico">💰</span>Deposit</div>
-    <div class="bni" onclick="sw(this,'support')"><span class="bico">🎧</span>Support</div>
-    <div class="bni" onclick="sw(this,'profile')"><span class="bico">👤</span>Profile</div>
+    <div class="bni on" onclick="swTab('home')"><span class="bico">🏠</span>Home</div>
+    <div class="bni" onclick="swTab('offers')"><span class="bico">🎁</span>Offers</div>
+    <div class="bni" onclick="swTab('deposit')"><span class="bico">💰</span>Deposit</div>
+    <div class="bni" onclick="swTab('support')"><div class="supp-btn">🎧</div>Support</div>
+    <div class="bni" onclick="swTab('profile')"><span class="bico">👤</span>Profile</div>
 </div>
 
 <script>
-// --- Configuration ---
+// --- Game Config ---
+var B=new Array(24).fill(null), turn='p', phase='placing', pPlaced=0, aPlaced=0, selIdx=null;
+var active=false, aiThink=false, waitRem=false, bet=0, bal=100;
 var PT=[{x:50,y:50},{x:245,y:50},{x:440,y:50},{x:110,y:110},{x:245,y:110},{x:380,y:110},{x:170,y:170},{x:245,y:170},{x:320,y:170},{x:50,y:245},{x:110,y:245},{x:170,y:245},{x:320,y:245},{x:380,y:245},{x:440,y:245},{x:170,y:320},{x:245,y:320},{x:320,y:320},{x:110,y:380},{x:245,y:380},{x:380,y:380},{x:50,y:440},{x:245,y:440},{x:440,y:440}];
 var ADJ={0:[1,9],1:[0,2,4],2:[1,14],3:[4,10],4:[1,3,5,7],5:[4,13],6:[7,11],7:[4,6,8],8:[7,12],9:[0,10,21],10:[3,9,11,18],11:[6,10,15],12:[8,13,17],13:[5,12,14,20],14:[2,13,23],15:[11,16,18],16:[15,17,19],17:[12,16,22],18:[10,15,19],19:[16,18,20],20:[13,19,23],21:[9,22],22:[19,21,23],23:[14,20,22]};
 var MILLS=[[0,1,2],[3,4,5],[6,7,8],[9,10,11],[12,13,14],[15,16,17],[18,19,20],[21,22,23],[0,9,21],[3,10,18],[6,11,15],[1,4,7],[16,19,22],[8,12,17],[5,13,20],[2,14,23]];
 
-// --- State ---
-var B=new Array(24).fill(null), turn='p', phase='placing', pPlaced=0, aPlaced=0, selIdx=null;
-var active=false, aiThink=false, waitRem=false, bet=0, bal=100;
-
 var cv=document.getElementById('gc'), ctx=cv.getContext('2d');
 
-// --- Navigation ---
-function sw(el, id) {
+// --- Tab System ---
+function swTab(t) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.bni').forEach(b => b.classList.remove('on'));
-    document.getElementById('pg-'+id).classList.add('active');
-    el.classList.add('on');
-    if(id === 'profile') drawSpin(0);
+    document.getElementById('pg-'+t).classList.add('active');
+    event.currentTarget.classList.add('on');
+    if(t==='profile') drawSpin(0);
 }
 
-// --- Game Logic ---
+// --- Betting ---
 function setBet(v, el) {
     bet = v;
     document.querySelectorAll('#pg-home .ch').forEach(b => b.classList.remove('on'));
@@ -199,16 +222,19 @@ function setBet(v, el) {
 }
 
 function startGame() {
-    if(bal < bet) { alert("Balance is too low!"); return; }
+    if(bal < bet) { alert("Insufficient Balance!"); return; }
     B.fill(null); pPlaced=0; aPlaced=0; turn='p'; phase='placing'; active=true; waitRem=false;
     document.getElementById('phT').textContent = "PLACING";
+    document.getElementById('tnT').textContent = "Your Turn";
     render();
 }
 
 function resetGame() {
     active=false; B.fill(null); pPlaced=0; aPlaced=0; render();
+    document.getElementById('tnT').textContent = "Select bet & Start";
 }
 
+// --- Renderer ---
 function render() {
     ctx.clearRect(0,0,490,490);
     ctx.strokeStyle='#C8A84B'; ctx.lineWidth=3;
@@ -220,12 +246,16 @@ function render() {
         if(B[i]) {
             ctx.beginPath(); ctx.arc(p.x, p.y, 20, 0, 7);
             ctx.fillStyle = (B[i]==='p') ? '#fff' : '#000';
-            ctx.fill(); ctx.strokeStyle = (selIdx===i) ? '#0f0' : '#C8A84B'; ctx.stroke();
+            ctx.shadowBlur = 10; ctx.shadowColor = B[i]==='p' ? '#fff':'#000';
+            ctx.fill(); ctx.shadowBlur = 0;
+            ctx.strokeStyle = (selIdx===i) ? '#25D366' : '#C8A84B';
+            ctx.lineWidth = (selIdx===i) ? 4 : 2; ctx.stroke();
         }
     });
 }
 function line(x1,y1,x2,y2){ ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); }
 
+// --- Click Handler ---
 cv.addEventListener('click', e => {
     if(!active || aiThink) return;
     let r=cv.getBoundingClientRect(), x=(e.clientX-r.left)*(490/r.width), y=(e.clientY-r.top)*(490/r.height);
@@ -233,31 +263,32 @@ cv.addEventListener('click', e => {
     if(idx === -1) return;
 
     if(waitRem) {
-        if(B[idx]==='a' && !isMill(idx,'a')) { B[idx]=null; waitRem=false; endPlayerTurn(); }
-        else if(B[idx]==='a' && B.every((v,k)=>v!=='a' || isMill(k,'a'))) { B[idx]=null; waitRem=false; endPlayerTurn(); }
+        if(B[idx]==='a' && !isMill(idx,'a')) { B[idx]=null; waitRem=false; endPTurn(); }
+        else if(B[idx]==='a' && B.every((v,k)=>v!=='a' || isMill(k,'a'))) { B[idx]=null; waitRem=false; endPTurn(); }
     } else if(phase === 'placing') {
-        if(!B[idx]) { B[idx]='p'; pPlaced++; if(isMill(idx,'p')) waitRem=true; else endPlayerTurn(); }
+        if(!B[idx]) { B[idx]='p'; pPlaced++; if(isMill(idx,'p')) waitRem=true; else endPTurn(); }
     } else {
         if(selIdx === null) { if(B[idx]==='p') selIdx=idx; }
         else {
             if(!B[idx] && (ADJ[selIdx].includes(idx) || cnt('p')===3)) {
                 B[selIdx]=null; B[idx]='p'; selIdx=null;
-                if(isMill(idx,'p')) waitRem=true; else endPlayerTurn();
+                if(isMill(idx,'p')) waitRem=true; else endPTurn();
             } else { selIdx=null; }
         }
     }
     render();
 });
 
-function endPlayerTurn() {
-    if(waitRem) { document.getElementById('tnT').textContent="MILL! Remove AI"; return; }
+function endPTurn() {
+    if(waitRem) { document.getElementById('tnT').textContent="MILL! Remove AI Piece"; return; }
     if(checkWin()) return;
-    turn='a'; aiThink=true;
-    document.getElementById('tnT').textContent="AI Thinking...";
+    if(pPlaced>=9 && aPlaced>=9) phase='moving';
+    document.getElementById('phT').textContent = phase.toUpperCase();
+    turn='a'; aiThink=true; document.getElementById('tnT').textContent="AI Thinking...";
     setTimeout(aiMove, 800);
 }
 
-// --- ADVANCED AI ---
+// --- PRO AI (Minimax Depth 7) ---
 function aiMove() {
     let best = getBestMove();
     if(phase==='placing') { B[best.to]='a'; aPlaced++; }
@@ -265,10 +296,8 @@ function aiMove() {
     
     if(isMill(best.to,'a')) B[getRemTarget('p')]=null;
     
-    if(pPlaced>=9 && aPlaced>=9) phase='moving';
-    document.getElementById('phT').textContent=phase.toUpperCase();
+    aiThink=false; turn='p'; 
     document.getElementById('tnT').textContent="Your Turn";
-    aiThink=false; turn='p';
     render(); checkWin();
 }
 
@@ -276,7 +305,7 @@ function getBestMove() {
     let moves = getAllMoves('a');
     let bestScore = -Infinity, bestMove = moves[0];
     for(let m of moves) {
-        let score = minimax(apply(B, m, 'a'), 5, -Infinity, Infinity, false);
+        let score = minimax(apply(B, m, 'a'), 7, -Infinity, Infinity, false);
         if(score > bestScore) { bestScore = score; bestMove = m; }
     }
     return bestMove;
@@ -285,6 +314,7 @@ function getBestMove() {
 function minimax(board, depth, alpha, beta, isMax) {
     if(depth===0) return evalB(board);
     let moves = getAllMoves(isMax?'a':'p', board);
+    if(moves.length === 0) return isMax ? -10000 : 10000;
     if(isMax) {
         let maxEval = -Infinity;
         for(let m of moves) {
@@ -308,7 +338,8 @@ function evalB(b) {
     let score = (cnt('a',b) - cnt('p',b)) * 100;
     MILLS.forEach(m => {
         let ac=m.filter(i=>b[i]==='a').length, pc=m.filter(i=>b[i]==='p').length;
-        if(ac===3) score += 80; if(pc===3) score -= 90;
+        if(ac===3) score += 150; if(pc===3) score -= 200;
+        if(ac===2 && m.some(i=>b[i]===null)) score += 50;
     });
     return score;
 }
@@ -342,43 +373,37 @@ function cnt(w,board=B){ return board.filter(v=>v===w).length; }
 
 function checkWin(){
     if(phase==='placing') return false;
-    if(cnt('a') < 3) { alert("You Win!"); bal+=bet*2; resetGame(); updateBal(); return true; }
-    if(cnt('p') < 3) { alert("AI Wins!"); bal-=bet; resetGame(); updateBal(); return true; }
+    if(cnt('a') < 3) { alert("You Win!"); bal+=bet; resetGame(); upUI(); return true; }
+    if(cnt('p') < 3) { alert("AI Win!"); bal-=bet; resetGame(); upUI(); return true; }
     return false;
 }
-function updateBal(){ document.getElementById('balEl').textContent=bal; }
+function upUI() { document.getElementById('balEl').textContent=bal; document.getElementById('profBal').textContent=bal; }
 
 // --- Spin Wheel ---
 function drawSpin(deg) {
-    let c = document.getElementById('spinCv').getContext('2d');
+    let c = document.getElementById('spinCv').getContext('2d'), sectors = ["0","1,000","0","5,000","0","20,000","0","25,000"];
     c.clearRect(0,0,260,260);
-    let sectors = ["0","50","0","100","0","500","0","10"];
-    for(let i=0; i<8; i++){
+    for(let i=0; i<8; i++) {
         c.beginPath(); c.moveTo(130,130);
         c.arc(130,130,120, (i*45+deg)*Math.PI/180, ((i+1)*45+deg)*Math.PI/180);
         c.fillStyle = i%2===0 ? '#111' : '#C8A84B'; c.fill();
         c.save(); c.translate(130,130); c.rotate((i*45+22.5+deg)*Math.PI/180);
-        c.fillStyle = i%2===0 ? '#fff' : '#000'; c.fillText(sectors[i], 80, 5); c.restore();
+        c.fillStyle = i%2===0 ? '#fff' : '#000'; c.font="bold 12px Arial"; c.fillText(sectors[i], 70, 5); c.restore();
     }
 }
 
-function startSpin() {
+function doSpin() {
     let last = localStorage.getItem('sLast') || 0, now = Date.now();
     if(now - last < 12*60*60*1000) { alert("Try again in 12 hours!"); return; }
-    
-    let btn = document.getElementById('spinBtn'), d = 0, speed = 20;
-    btn.disabled = true;
+    let d=0, spd=25; 
     let anim = setInterval(() => {
-        d += speed; speed *= 0.98; drawSpin(d);
-        if(speed < 0.2) { 
-            clearInterval(anim); btn.disabled = false;
-            localStorage.setItem('sLast', Date.now());
-            alert("Better luck next time! Result: 0");
-        }
+        d += spd; spd *= 0.98; drawSpin(d);
+        if(spd < 0.2) { clearInterval(anim); localStorage.setItem('sLast', Date.now()); alert("Result: Rs 0. Better luck next time!"); }
     }, 30);
 }
 
-function doDeposit() { window.open("https://wa.me/923297877948?text=Deposit Request"); }
+function selP(el) { document.querySelectorAll('.pmb').forEach(b=>b.classList.remove('sel')); el.classList.add('sel'); }
+function doDep() { window.open("https://wa.me/923297877948?text=Deposit Rs " + document.getElementById('dAmt').value); }
 
 render();
 </script>
