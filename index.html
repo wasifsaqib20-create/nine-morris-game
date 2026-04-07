@@ -3,423 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
-<title>Nine Men Morris - Professional</title>
+<title>Nine Men Morris - Pro Arena</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+/* CSS Reset & Variables */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;}
 :root{
   --g:#C8A84B;--g2:#E8C96A;--g3:#8B6914;
   --c1:#1a1a1a;--c2:#111;
   --r:#c62828;--gr:#2E7D32;--d:#6a5a3a;--wa:#25D366;
 }
-body{background:linear-gradient(160deg,#0a100a,#050d05);font-family:Arial,sans-serif;color:#fff;padding:0 0 76px;min-height:100vh;}
+body{background:linear-gradient(160deg,#0a100a,#050d05);font-family:Arial,sans-serif;color:#fff;padding-bottom:80px;overflow-x:hidden;}
 .wrap{max-width:540px;margin:0 auto;padding:0 10px;}
 
 /* Animations */
 @keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 5px var(--g)}50%{box-shadow:0 0 20px var(--g)}}
 
 /* Auth Screen */
-.auth-screen{
-  position:fixed;inset:0;
-  background:linear-gradient(160deg,#0a100a,#050d05);
-  z-index:999;display:flex;align-items:center;justify-content:center;
-  padding:20px;overflow-y:auto;
-}
-.auth-card{
-  background:linear-gradient(145deg,#1c1c1c,#111);
-  border:1.5px solid var(--g);border-radius:26px;
-  padding:28px 22px;max-width:400px;width:100%;
-  animation:popIn .35s ease;
-}
-.auth-logo{text-align:center;margin-bottom:22px;}
-.auth-logo .ico{font-size:42px;margin-bottom:8px;}
-.auth-logo .ti{font-size:22px;font-weight:900;}
-.auth-logo .ti span{background:linear-gradient(135deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.auth-logo .sub{font-size:10px;color:var(--d);letter-spacing:2px;}
-.auth-tabs{display:flex;background:#0a0a0a;padding:4px;border-radius:50px;margin-bottom:18px;}
-.auth-tab{flex:1;padding:10px;border-radius:50px;text-align:center;font-weight:700;font-size:13px;cursor:pointer;color:var(--d);transition:all .2s;}
-.auth-tab.on{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;}
-.af{margin-bottom:13px;}
-.af label{font-size:10px;color:var(--d);letter-spacing:1.5px;display:block;margin-bottom:5px;}
-.af input{
-  background:#0a0a0a;border:1.5px solid rgba(200,168,75,.28);
-  border-radius:12px;padding:12px 14px;width:100%;color:#fff;
-  font-size:14px;outline:none;font-family:Arial;
-}
-.af input:focus{border-color:var(--g);}
-.af input.ferr{border-color:#ef5350!important;animation:shake .3s;}
-.aerr{background:rgba(239,83,80,.1);border:1px solid rgba(239,83,80,.3);border-radius:10px;padding:9px 12px;color:#ef5350;font-size:12px;margin-bottom:11px;display:none;}
-.asuc{background:rgba(102,187,106,.1);border:1px solid rgba(102,187,106,.3);border-radius:10px;padding:9px 12px;color:#66BB6A;font-size:13px;font-weight:700;margin-bottom:11px;display:none;text-align:center;}
-.abtn{
-  background:linear-gradient(135deg,var(--g),var(--g2),var(--g3));
-  border:none;padding:13px;border-radius:50px;font-weight:800;font-size:14px;
-  color:#000;cursor:pointer;width:100%;margin-top:4px;
-  font-family:Arial;
-}
-.abtn:active{transform:scale(.97);}
-.ps-bar{height:3px;border-radius:2px;margin-top:6px;background:#222;}
-.ps-lbl{font-size:10px;margin-top:4px;color:var(--d);}
-.auth-foot{text-align:center;font-size:11px;color:var(--d);margin-top:14px;}
-.auth-foot a{color:var(--g);cursor:pointer;font-weight:700;}
+.auth-screen{position:fixed;inset:0;background:#050d05;z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;}
+.auth-card{background:#111;border:1.5px solid var(--g);border-radius:26px;padding:28px 22px;width:100%;max-width:400px;animation:popIn .35s ease;}
 
-/* Main App */
-.tnav{
-  background:linear-gradient(135deg,#101a10,#0a0a0a);
-  border-bottom:1px solid rgba(200,168,75,.18);
-  padding:9px 13px;display:flex;align-items:center;
-  justify-content:space-between;position:sticky;top:0;z-index:80;
-}
-.tlogo{font-size:18px;font-weight:900;}
-.tlogo .gl{background:linear-gradient(135deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.tnav-r{display:flex;gap:7px;}
-.tni,.uav{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.tni{background:rgba(200,168,75,.1);border:1px solid rgba(200,168,75,.22);font-size:15px;}
-.uav{background:linear-gradient(135deg,var(--g),var(--g2));font-weight:900;font-size:14px;color:#000;border:2px solid var(--g);}
+/* Navigation */
+.tnav{background:#101a10;border-bottom:1px solid rgba(200,168,75,.3);padding:12px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+.tlogo{font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--g),var(--g2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 
-.t5{background:#121a12;padding:7px 10px;display:flex;gap:6px;overflow-x:auto;}
-.t5i{flex-shrink:0;background:rgba(200,168,75,.08);border:1px solid rgba(200,168,75,.16);border-radius:50px;padding:6px 12px;display:flex;align-items:center;gap:5px;cursor:pointer;font-size:11px;font-weight:700;color:rgba(255,255,255,.6);white-space:nowrap;}
-.t5i:active{background:linear-gradient(135deg,var(--g),var(--g2));color:#000;}
+/* Game Area */
+.bw{background:linear-gradient(145deg,#1E1A10,#0D0B06);border-radius:20px;padding:10px;margin:15px 0;border:1px solid var(--g);box-shadow:0 10px 30px rgba(0,0,0,0.5);}
+canvas#gc{display:block;width:100%;height:auto;max-width:490px;margin:0 auto;cursor:pointer;border-radius:12px;touch-action:none;}
 
-.hero{background:#101a10;border-bottom:1px solid rgba(200,168,75,.1);padding:12px 14px;}
-.hero-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
-.hbal .lbl{font-size:9px;color:var(--d);letter-spacing:2px;}
-.hbal .val{font-size:22px;font-weight:900;color:var(--g);}
-.hbal .sv{font-size:11px;color:rgba(255,255,255,.4);}
-.uc{display:flex;align-items:center;gap:9px;}
-.uav2{width:40px;height:40px;border-radius:50%;border:2px solid var(--g);background:linear-gradient(135deg,var(--g),var(--g2));display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;color:#000;}
-.ui .un{font-size:13px;font-weight:700;}
-.ui .ue{font-size:10px;color:var(--d);}
-.hbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+/* Controls */
+.ccard{background:var(--c1);border:1px solid rgba(200,168,75,.3);border-radius:20px;padding:15px;margin-bottom:15px;}
+.bg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.ch{background:#111;border:1px solid var(--g);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:bold;font-size:13px;color:var(--g);}
+.ch.on{background:var(--g);color:#000;}
+.bgo{background:linear-gradient(135deg,var(--g),var(--g2));border:none;padding:14px;border-radius:12px;font-weight:900;width:100%;cursor:pointer;color:#000;text-transform:uppercase;letter-spacing:1px;}
+.bgo:active{transform:scale(0.98);}
 
-.bsec{padding:0 10px;}
-.ghd{display:flex;align-items:center;justify-content:space-between;padding:8px 0;gap:7px;}
-.pb{background:var(--c1);border:1px solid rgba(200,168,75,.18);border-radius:50px;padding:5px 11px;display:flex;align-items:center;gap:7px;}
-.dot{width:22px;height:22px;border-radius:50%;}
-.doty{background:radial-gradient(circle at 35% 35%,#fff,#ddd,#aaa);}
-.dota{background:radial-gradient(circle at 35% 35%,#444,#111,#000);border:1px solid #555;}
-.pi .pl{font-size:8px;color:var(--d);}
-.pi .pn{font-size:18px;font-weight:700;}
-.tmr{position:relative;width:46px;height:46px;display:none;}
-.tmr svg{transform:rotate(-90deg);}
-.trbg{fill:none;stroke:#222;stroke-width:4;}
-.trrng{fill:none;stroke:var(--g);stroke-width:4;stroke-dasharray:188;}
-.tnum{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:12px;font-weight:700;color:var(--g);}
-.bw{background:#1E1A10;border-radius:20px;padding:10px;margin-bottom:9px;}
-canvas#gc{display:block;width:100%;height:auto;max-width:490px;margin:0 auto;cursor:pointer;border-radius:12px;}
-.fly{text-align:center;margin:5px 0;display:none;}
-.srow{background:rgba(200,168,75,.05);border-left:3px solid var(--g);border-radius:11px;padding:7px 11px;margin-bottom:7px;display:flex;justify-content:space-between;font-size:11px;}
-.mb{background:rgba(200,168,75,.04);border:1px solid rgba(200,168,75,.12);border-radius:11px;padding:8px 12px;margin-bottom:9px;text-align:center;font-size:12px;color:var(--g);}
-
-.ccard{background:var(--c1);border:1px solid rgba(200,168,75,.15);border-radius:20px;padding:13px;margin-bottom:10px;}
-.blbl{font-size:9px;color:var(--d);letter-spacing:2px;margin-bottom:7px;}
-.bg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:7px;}
-.ch{background:#111;border:1.5px solid rgba(200,168,75,.25);border-radius:40px;padding:7px 14px;font-weight:700;color:rgba(200,168,75,.65);cursor:pointer;font-size:13px;}
-.ch.on{background:var(--g);color:#000;border-color:var(--g);}
-.binp{background:#0a0a0a;border:1.5px solid rgba(200,168,75,.25);border-radius:10px;padding:10px;width:100%;color:var(--g);text-align:center;}
-
-.bgo{background:linear-gradient(135deg,var(--g),var(--g2),var(--g3));border:none;padding:12px 16px;border-radius:50px;font-weight:800;font-size:13px;color:#000;cursor:pointer;width:100%;}
-.bo{background:rgba(200,168,75,.07);border:1.5px solid rgba(200,168,75,.22);padding:10px 13px;border-radius:50px;font-weight:700;color:var(--g);cursor:pointer;width:100%;}
-.bred{background:linear-gradient(135deg,var(--r),#7a0000);border:none;padding:7px 14px;border-radius:50px;font-weight:700;color:#fff;cursor:pointer;}
-.bgrn{background:linear-gradient(135deg,var(--gr),#145214);border:none;padding:12px 16px;border-radius:50px;font-weight:800;color:#fff;cursor:pointer;width:100%;}
-
-.plyg{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:9px 12px;background:#0a0a0a;border-radius:50px;margin-bottom:10px;}
-.plg{font-size:11px;font-weight:700;color:#fff;}
-
-.hw{max-height:140px;overflow-y:auto;}
-.hi{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(200,168,75,.06);font-size:11px;}
-.hwin{color:#66BB6A;}.hloss{color:#ef5350;}
-
-.page{display:none;}
-.page.active{display:block;}
-
-/* Deposit */
-.pmb{background:#0a1a0a;border:2px solid rgba(200,168,75,.2);border-radius:12px;padding:10px 8px;cursor:pointer;display:flex;align-items:center;gap:9px;}
-.pmb.sel{border-color:var(--g);background:rgba(200,168,75,.08);}
-.pml{width:48px;height:36px;border-radius:7px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:6px;}
-.pmn{font-size:12px;font-weight:700;color:#fff;flex:1;}
-.pmbo{background:#c62828;color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;margin-left:auto;}
-.damts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:9px;}
-.da{background:#111;border:1.5px solid rgba(200,168,75,.25);border-radius:10px;padding:8px;text-align:center;font-weight:700;font-size:12px;cursor:pointer;}
-.da.on{background:var(--g);color:#000;}
-.pib{background:#0a0a0a;border-radius:10px;padding:8px;margin-bottom:10px;font-size:11px;color:var(--d);display:none;}
+/* Piece Info Bar */
+.ghd{display:flex;justify-content:space-between;padding:10px 0;}
+.pb{background:#111;border:1px solid var(--g);padding:8px 15px;border-radius:50px;display:flex;align-items:center;gap:10px;}
+.dot{width:15px;height:15px;border-radius:50%;}
+.doty{background:#fff;box-shadow:0 0 10px #fff;}
+.dota{background:#000;border:1px solid #fff;}
 
 /* Bottom Nav */
-.bnav{position:fixed;bottom:0;left:0;right:0;background:#0f1a0f;border-top:2px solid rgba(200,168,75,.18);display:flex;}
-.bni{flex:1;padding:9px 2px 11px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;}
-.bni .bico{font-size:26px;}
-.bni .blbl{font-size:11px;font-weight:700;color:#777;}
-.bni.on .blbl{color:var(--g);}
-.bni.supp .bico{background:linear-gradient(135deg,var(--wa),#0f9b4e);border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;margin-top:-18px;font-size:24px;}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#0f1a0f;border-top:1px solid var(--g);display:flex;justify-content:space-around;padding:10px;z-index:100;}
+.bni{text-align:center;color:#777;font-size:12px;}
+.bni.on{color:var(--g);}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:950;justify-content:center;align-items:center;}
-.modal.open{display:flex;}
-.mbox{background:#1c1c1c;border:1.5px solid var(--g);border-radius:24px;padding:19px;max-width:390px;width:100%;}
-.mcl{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.08);border:none;color:#fff;font-size:14px;cursor:pointer;padding:5px 10px;border-radius:50%;}
-
-.toast{position:fixed;bottom:82px;left:50%;transform:translateX(-50%);background:#1c1808;color:var(--g);padding:9px 18px;border-radius:50px;font-weight:700;z-index:1100;border:1px solid var(--g);white-space:nowrap;font-size:12px;}
+.mb{background:rgba(200,168,75,0.1);padding:10px;border-radius:10px;text-align:center;color:var(--g);font-size:13px;margin-bottom:10px;border:1px dashed var(--g);}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:var(--g);color:#000;padding:8px 20px;border-radius:50px;font-weight:bold;z-index:2000;display:none;}
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
+<div id="toast" class="toast"></div>
+
+<!-- Auth -->
 <div class="auth-screen" id="authSc">
   <div class="auth-card">
-    <div class="auth-logo">
-      <div class="ico">♟️</div>
-      <div class="ti"><span>NINE MEN</span> MORRIS</div>
-      <div class="sub">PROFESSIONAL ARENA</div>
-    </div>
-    <div class="auth-tabs">
-      <div class="auth-tab on" id="tabLoginBtn">Login</div>
-      <div class="auth-tab" id="tabSignupBtn">Sign Up</div>
-    </div>
-    <div class="aerr" id="aErr"></div>
-    <div class="asuc" id="aSuc"></div>
-    
-    <!-- Login Form -->
-    <div id="loginForm">
-      <div class="af"><label>EMAIL</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
-      <div class="af"><label>PASSWORD</label><input type="password" id="loginPassword" placeholder="Enter password"></div>
-      <button class="abtn" id="loginBtn">Login to Game</button>
-      <div class="auth-foot">No account? <a id="switchToSignup">Sign Up Free</a></div>
-    </div>
-    
-    <!-- Signup Form -->
-    <div id="signupForm" style="display:none">
-      <div class="af"><label>FULL NAME</label><input type="text" id="signupName" placeholder="Your full name"></div>
-      <div class="af"><label>EMAIL</label><input type="email" id="signupEmail" placeholder="your@email.com"></div>
-      <div class="af">
-        <label>PASSWORD <span id="psLbl" class="ps-lbl">(min 8 chars)</span></label>
-        <input type="password" id="signupPassword" placeholder="Create password">
-        <div class="ps-bar" id="psBar"></div>
-      </div>
-      <button class="abtn" id="signupBtn">Create Account — Free</button>
-      <div class="auth-foot">Have account? <a id="switchToLogin">Login</a></div>
-    </div>
+    <h2 style="text-align:center;margin-bottom:20px;color:var(--g)">NINE MEN MORRIS</h2>
+    <input type="email" id="lE" placeholder="Email" style="width:100%;padding:12px;margin-bottom:10px;border-radius:8px;border:none;">
+    <input type="password" id="lP" placeholder="Password" style="width:100%;padding:12px;margin-bottom:20px;border-radius:8px;border:none;">
+    <button class="bgo" onclick="doLogin()">Login Game</button>
   </div>
 </div>
 
-<!-- MAIN APP -->
 <div id="app" style="display:none">
-<div class="tnav">
-  <div class="tlogo"><span class="gl">NINE MEN</span> MORRIS</div>
-  <div class="tnav-r">
-    <div class="tni" onclick="showPage('support')">🎧</div>
-    <div class="uav" id="topAv">A</div>
-  </div>
-</div>
-
-<div class="t5">
-  <div class="t5i" onclick="shareWA()">🎁 Invitation</div>
-  <div class="t5i" onclick="doLogout()">🆕 New Player</div>
-  <div class="t5i" onclick="showPage('deposit')">💰 Deposit</div>
-  <div class="t5i" onclick="showPage('spin')">🎡 Spin</div>
-  <div class="t5i" onclick="showPage('vip')">👑 VIP</div>
-</div>
-
-<div class="wrap">
-<!-- HOME PAGE -->
-<div id="pageHome" class="page active">
-  <div class="hero">
-    <div class="hero-row">
-      <div class="hbal">
-        <div class="lbl">BALANCE</div>
-        <div class="val">Rs <span id="balEl">100</span></div>
-        <div class="sv">Wins: Rs <span id="winEl">0</span> | Games: <span id="gEl">0</span></div>
-      </div>
-      <div class="uc">
-        <div class="uav2" id="hAv">A</div>
-        <div class="ui"><div class="un" id="hName">Player</div><div class="ue" id="hEmail"></div></div>
-      </div>
-    </div>
-    <div class="hbtns">
-      <button class="bgrn" onclick="showPage('deposit')">💰 DEPOSIT</button>
-      <button class="bo" onclick="openWithdraw()">💸 WITHDRAW</button>
-    </div>
+  <div class="tnav">
+    <div class="tlogo">NINE MORRIS PRO</div>
+    <div style="color:var(--g);font-weight:bold">Rs <span id="balEl">100</span></div>
   </div>
 
-  <div class="bsec">
+  <div class="wrap">
     <div class="ghd">
-      <div class="pb"><div class="dot doty"></div><div class="pi"><div class="pl">YOU</div><div class="pn" id="pPcs">9</div></div></div>
-      <div class="tmr" id="tmrW">
-        <svg width="46" height="46" viewBox="0 0 46 46"><circle class="trbg" cx="23" cy="23" r="19"/><circle class="trrng" id="trRing" cx="23" cy="23" r="19"/></svg>
-        <div class="tnum" id="tnNum">15</div>
-      </div>
-      <button class="bred" onclick="resetGame()">✖ RESET</button>
-      <div class="pb"><div class="dot dota"></div><div class="pi"><div class="pl">AI</div><div class="pn" id="aPcs">9</div></div></div>
+      <div class="pb"><div class="dot doty"></div><span>You: <b id="pPcs">9</b></span></div>
+      <div class="pb"><div class="dot dota"></div><span>AI: <b id="aPcs">9</b></span></div>
     </div>
-    <div class="bw"><canvas id="gc" width="490" height="490"></canvas></div>
-    <div class="fly" id="flyTag">✈️ FLYING MODE</div>
-    <div class="srow">
-      <span>PHASE: <strong id="phT">PLACING</strong></span>
-      <span>TURN: <strong id="tnT">Your Turn</strong></span>
-      <span>AI: <strong>MINIMAX</strong></span>
+
+    <div class="mb" id="msgBox">Select Bet & Press Start</div>
+
+    <div class="bw">
+      <canvas id="gc" width="490" height="490"></canvas>
     </div>
-    <div id="msgBox" class="mb">Select bet and press START GAME</div>
+
     <div class="ccard">
-      <div class="blbl">BET AMOUNT (Rs)</div>
-      <div class="bg">
-        <div class="ch" data-bet="0">0</div>
-        <div class="ch" data-bet="20">20</div>
-        <div class="ch" data-bet="40">40</div>
-        <div class="ch" data-bet="60">60</div>
-        <div class="ch" data-bet="100">100</div>
-        <div class="ch" data-bet="200">200</div>
-        <div class="ch" data-bet="500">500</div>
-        <div class="ch" data-bet="1000">1000</div>
-        <div class="ch" data-bet="5000">5000</div>
+      <div class="bg" id="betBtns">
+        <div class="ch on" onclick="setBet(20)">20</div>
+        <div class="ch" onclick="setBet(50)">50</div>
+        <div class="ch" onclick="setBet(100)">100</div>
+        <div class="ch" onclick="setBet(500)">500</div>
       </div>
-      <input class="binp" type="number" id="customBet" placeholder="Custom amount...">
-      <p style="font-size:12px;color:var(--g);margin-top:5px">Current Bet: Rs <span id="betDisplay">0</span></p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px">
-        <button class="bgo" onclick="startGame()">🎮 START GAME</button>
-        <button class="bo" onclick="resetGame()">🔄 RESTART</button>
-      </div>
-    </div>
-    <div class="ccard">
-      <h4 style="margin-bottom:8px;color:var(--g)">📜 TRANSACTION HISTORY</h4>
-      <div id="historyList" class="hw"><p style="color:#2e1e08;text-align:center">No transactions yet</p></div>
+      <button class="bgo" id="startBtn" onclick="startGame()">Start Real Money Match</button>
+      <button class="bgo" onclick="resetGame()" style="margin-top:10px;background:rgba(255,255,255,0.1);color:#fff;">Reset Board</button>
     </div>
   </div>
-</div>
 
-<!-- DEPOSIT PAGE -->
-<div id="pageDeposit" class="page" style="padding:10px">
-  <div style="display:flex;justify-content:space-between;padding:8px 0">
-    <div style="font-size:17px;font-weight:900">Deposit</div>
-    <div style="color:var(--g);font-weight:700">Rs <span id="balDep">100</span></div>
-  </div>
-  <div style="font-size:12px;font-weight:700;margin-bottom:9px">Payment method</div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:13px">
-    <div class="pmb" data-method="jazzcash" onclick="selectPayment(this,'jazzcash')">
-      <div class="pml"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='28' viewBox='0 0 90 36'%3E%3Crect width='90' height='36' rx='5' fill='%23CC0000'/%3E%3Ctext x='8' y='24' font-size='16' font-weight='900' fill='white'%3EJazz%3C/text%3E%3Ctext x='48' y='24' font-size='12' fill='%23FFD700'%3ECash%3C/text%3E%3C/svg%3E" style="width:48px;height:28px"></div>
-      <div class="pmn">JazzCash</div>
-      <div class="pmbo">+0.5%</div>
-    </div>
-    <div class="pmb" data-method="easypaisa" onclick="selectPayment(this,'easypaisa')">
-      <div class="pml"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='28' viewBox='0 0 90 36'%3E%3Crect width='90' height='36' rx='5' fill='%2300A94F'/%3E%3Ccircle cx='20' cy='18' r='12' fill='white'/%3E%3Ctext x='20' y='23' font-size='14' font-weight='900' fill='%2300A94F' text-anchor='middle'%3Ee%3C/text%3E%3Ctext x='38' y='15' font-size='9' font-weight='900' fill='white'%3EEasy%3C/text%3E%3Ctext x='38' y='26' font-size='8' fill='%23FFE000'%3Epaisa%3C/text%3E%3C/svg%3E" style="width:48px;height:28px"></div>
-      <div class="pmn">EasyPaisa</div>
-      <div class="pmbo">+0.5%</div>
-    </div>
-  </div>
-  <div id="paymentInfo" class="pib"></div>
-  <div class="damts">
-    <div class="da" data-amt="200">200</div>
-    <div class="da" data-amt="500">500</div>
-    <div class="da" data-amt="1000">1,000</div>
-    <div class="da" data-amt="5000">5,000</div>
-  </div>
-  <div style="background:#0a1a0a;border-radius:10px;padding:12px;margin-bottom:11px;display:flex;align-items:center;gap:8px">
-    <span style="color:var(--g);font-weight:700">Rs</span>
-    <input type="number" id="depositAmount" placeholder="Min 100" style="background:transparent;border:none;color:#fff;flex:1">
-  </div>
-  <button class="bgo" onclick="requestDeposit()" style="background:linear-gradient(135deg,#2E7D32,#145214)">Deposit Now</button>
-  <button class="bo" onclick="openWithdraw()" style="margin-top:8px">💸 Withdraw Funds</button>
-</div>
-
-<!-- SPIN PAGE -->
-<div id="pageSpin" class="page" style="padding:10px">
-  <div style="font-size:17px;font-weight:900;color:var(--g);padding:8px 0">🎡 Lucky Spin</div>
-  <div class="stmr" style="background:rgba(200,168,75,.06);padding:7px;text-align:center;border-radius:11px;margin-bottom:11px">
-    ⏰ <span id="spinTimer">Ready to spin!</span>
-  </div>
-  <button class="bgo" id="spinBtn" onclick="doSpin()">🎰 SPIN NOW!</button>
-  <div id="spinResult" style="text-align:center;margin-top:10px;color:var(--g)"></div>
-</div>
-
-<!-- VIP PAGE -->
-<div id="pageVip" class="page" style="padding:10px">
-  <div style="font-size:17px;font-weight:900;color:var(--g);padding:8px 0">👑 VIP Membership</div>
-  <div class="vc" style="background:#2d1f00;border:1.5px solid var(--g);border-radius:16px;padding:12px;margin-bottom:8px">
-    <div style="font-size:28px">🥉</div>
-    <div style="flex:1"><div style="font-weight:700">Bronze VIP</div><div style="font-size:10px;color:var(--d)">5% cashback</div></div>
-    <div style="font-weight:700;color:var(--g)">Rs 500</div>
-  </div>
-  <button class="bgo" onclick="window.open('https://wa.me/923297877948?text=VIP%20Nine%20Men%20Morris','_blank')">Get VIP via WhatsApp</button>
-</div>
-
-<!-- SUPPORT PAGE -->
-<div id="pageSupport" class="page" style="padding:10px">
-  <div style="background:linear-gradient(135deg,#1B5E20,#2E7D32);padding:16px;border-radius:16px;margin-bottom:10px;text-align:center">
-    <div style="font-size:16px;font-weight:700">Customer Support</div>
-    <div style="font-size:10px;color:rgba(255,255,255,.65)">24/7 • Always Online</div>
-  </div>
-  <a href="https://wa.me/923297877948?text=Nine%20Men%20Morris%20Support" target="_blank" class="bgo" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
-    Chat on WhatsApp
-  </a>
-</div>
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="bnav">
-  <div class="bni on" data-page="home"><div class="bico">🏠</div><div class="blbl">Home</div></div>
-  <div class="bni" data-page="deposit"><div class="bico">💰</div><div class="blbl">Deposit</div></div>
-  <div class="bni supp" data-page="support"><div class="bico">🎧</div><div class="blbl">Support</div></div>
-  <div class="bni" data-page="profile"><div class="bico">👤</div><div class="blbl">Profile</div></div>
-</div>
-</div>
-
-<!-- MODALS -->
-<div id="withdrawModal" class="modal">
-  <div class="mbox" style="position:relative">
-    <button class="mcl" onclick="closeModal('withdrawModal')">✕</button>
-    <h3 style="color:var(--g);margin-bottom:14px">💸 Withdraw Funds</h3>
-    <div class="inpl">Amount (Rs)</div>
-    <input class="inp" type="number" id="withdrawAmount" placeholder="Enter amount">
-    <div class="inpl">Account</div>
-    <input class="inp" type="text" id="withdrawAccount" placeholder="0300-XXXXXXX">
-    <button class="bgo" onclick="requestWithdraw()">Send Request</button>
+  <div class="bnav">
+    <div class="bni on"><b>HOME</b></div>
+    <div class="bni" onclick="alert('WhatsApp for Deposit: +923297877948')"><b>DEPOSIT</b></div>
+    <div class="bni" onclick="alert('Withdrawals process in 24h')"><b>WITHDRAW</b></div>
   </div>
 </div>
 
 <script>
-// ========== DATABASE & AUTH SYSTEM ==========
-const DB_KEY = 'nmm_users';
-const SESSION_KEY = 'nmm_session';
+// --- Game Config ---
+var PT=[{x:50,y:50},{x:245,y:50},{x:440,y:50},{x:110,y:110},{x:245,y:110},{x:380,y:110},{x:170,y:170},{x:245,y:170},{x:320,y:170},{x:50,y:245},{x:110,y:245},{x:170,y:245},{x:320,y:245},{x:380,y:245},{x:440,y:245},{x:170,y:320},{x:245,y:320},{x:320,y:320},{x:110,y:380},{x:245,y:380},{x:380,y:380},{x:50,y:440},{x:245,y:440},{x:440,y:440}];
+var ADJ={0:[1,9],1:[0,2,4],2:[1,14],3:[4,10],4:[1,3,5,7],5:[4,13],6:[7,11],7:[4,6,8],8:[7,12],9:[0,10,21],10:[3,9,11,18],11:[6,10,15],12:[8,13,17],13:[5,12,14,20],14:[2,13,23],15:[11,16,18],16:[15,17,19],17:[12,16,22],18:[10,15,19],19:[16,18,20],20:[13,19,23],21:[9,22],22:[19,21,23],23:[14,20,22]};
+var MILLS=[[0,1,2],[3,4,5],[6,7,8],[9,10,11],[12,13,14],[15,16,17],[18,19,20],[21,22,23],[0,9,21],[3,10,18],[6,11,15],[1,4,7],[16,19,22],[8,12,17],[5,13,20],[2,14,23]];
 
-let currentUser = null;
-let userData = null;
+// --- State ---
+var B=new Array(24).fill(null), turn='p', phase='placing', pPlaced=0, aPlaced=0, selIdx=null;
+var active=false, aiThink=false, waitRem=false, bet=20, bal=100;
 
-function getUsers() {
-  try {
-    return JSON.parse(localStorage.getItem(DB_KEY) || '{}');
-  } catch(e) { return {}; }
+var cv=document.getElementById('gc'), ctx=cv.getContext('2d');
+
+// --- Auth & UI ---
+function doLogin(){
+    document.getElementById('authSc').style.display='none';
+    document.getElementById('app').style.display='block';
+    showToast("Welcome Back! Ready to Win?");
+    render();
 }
 
-function saveUsers(users) {
-  localStorage.setItem(DB_KEY, JSON.stringify(users));
+function showToast(m){
+    var t=document.getElementById('toast');t.textContent=m;t.style.display='block';
+    setTimeout(()=>t.style.display='none',3000);
 }
 
-function getSession() {
-  try {
-    return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-  } catch(e) { return null; }
+function setBet(v){
+    bet=v;
+    document.querySelectorAll('.ch').forEach(b=>b.classList.remove('on'));
+    event.target.classList.add('on');
 }
 
-function setSession(email, name) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ email, name }));
+// --- Game Logic ---
+function startGame(){
+    if(bal<bet){ alert("Insufficient Balance!"); return; }
+    B.fill(null); pPlaced=0; aPlaced=0; turn='p'; phase='placing'; active=true; waitRem=false;
+    document.getElementById('msgBox').textContent="Game Started: Your Turn (Place Piece)";
+    render();
 }
 
-function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
+function resetGame(){
+    active=false; B.fill(null); pPlaced=0; aPlaced=0; render();
+    document.getElementById('msgBox').textContent="Select Bet & Press Start";
 }
 
-function getUserData(email) {
-  try {
-    const data = JSON.parse(localStorage.getItem('nmm_data_' + email) || 'null');
-    if (data) return data;
-  } catch(e) {}
-  return { balance: 100, wins: 0, games: 0, lastSpin: 0, history: [] };
+// --- Drawing ---
+function render(){
+    ctx.clearRect(0,0,490,490);
+    // Board Lines
+    ctx.strokeStyle='#C8A84B'; ctx.lineWidth=3;
+    drawRect(50,50,440,440); drawRect(110,110,380,380); drawRect(170,170,320,320);
+    line(245,50,245,170); line(245,320,245,440); line(50,245,170,245); line(320,245,440,245);
+
+    PT.forEach((p,i)=>{
+        ctx.beginPath(); ctx.arc(p.x,p.y,6,0,7); ctx.fillStyle='#555'; ctx.fill();
+        if(B[i]){
+            ctx.beginPath(); ctx.arc(p.x,p.y,20,0,7);
+            ctx.fillStyle = B[i]==='p' ? '#fff' : '#000';
+            ctx.shadowBlur=10; ctx.shadowColor=B[i]==='p' ? '#fff' : '#000';
+            ctx.fill(); ctx.shadowBlur=0;
+            ctx.strokeStyle='#C8A84B'; ctx.lineWidth=2; ctx.stroke();
+            if(selIdx===i){ ctx.lineWidth=4; ctx.strokeStyle='#25D366'; ctx.stroke(); }
+        }
+    });
+    document.getElementById('pPcs').textContent = 9-pPlaced;
+    document.getElementById('aPcs').textContent = 9-aPlaced;
 }
 
-function saveUserData() {
-  if (currentUser && userData) {
-    localStorage.setItem('nmm_data_' + currentUser.email, JSON.stringify(userData));
-  }
+function drawRect(x1,y1,x2,y2){ ctx.strokeRect(x1,y1,x2-x1,y2-y1); }
+function line(x1,y1,x2,y2){ ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); }
+
+// --- Input ---
+cv.addEventListener('click', e=>{
+    if(!active || aiThink) return;
+    let rect=cv.getBoundingClientRect(), x=(e.clientX-rect.left)*(490/rect.width), y=(e.clientY-rect.top)*(490/rect.height);
+    let idx = PT.findIndex(p=>Math.hypot(p.x-x, p.y-y)<25);
+    if(idx===-1) return;
+
+    if(waitRem) handleRem(idx);
+    else if(phase==='placing') handlePlace(idx);
+    else handleMove(idx);
+});
+
+function handlePlace(i){
+    if(B[i]) return;
+    B[i]='p'; pPlaced++;
+    if(isMill(i,'p')) triggerRem();
+    else endTurn();
 }
 
-// ========== AUTH UI FUNCTIONS ==========
-function showError(msg) {
-  const errDiv = document.getElementById('aErr');
-  err
+function handleMove(i){
+    if(selIdx===null){
+        if(B[i]==='p') selIdx=i;
+    } else {
+        if(B[i]===null && (cnt('p')===3 || ADJ[selIdx].includes(i))){
+            B[selIdx]=null; B[i]='p'; selIdx=null;
+            if(isMill(i,'p')) triggerRem();
+            else endTurn();
+        } else { selIdx=null; }
+    }
+    render();
+}
+
+function triggerRem(){
+    waitRem=true;
+    document.getElementById('msgBox').textContent="MILL! Remove an AI piece";
+    render();
+}
+
+function handleRem(i){
+    if(B[i]==='a' && !isMill(i,'a')){
+        B[i]=null; waitRem=false; endTurn();
+    } else if(B[i]==='a' && B.every((v,k)=>v!=='a' || isMill(k,'a'))){
+        B[i]=null; waitRem=false; endTurn();
+    }
+}
+
+function endTurn(){
+    render();
+    if(checkWin()) return;
+    if(pPlaced>=9 && aPlaced>=9) phase='moving';
+    turn='a'; aiThink=true;
+    document.getElementById('msgBox').textContent="AI is Thinking...";
+    setTimeout(doAI, 800);
+}
+
+// --- SUPER AI (Minimax + Heuristics) ---
+function doAI(){
+    let bestMove = getBestMove();
+    if(phase==='placing'){
+        B[bestMove.to] = 'a'; aPlaced++;
+        if(isMill(bestMove.to,'a')) B[getBestRem('p')]=null;
+    } else {
+        B[bestMove.from]=null; B[bestMove.to]='a';
+        if(isMill(bestMove.to,'a')) B[getBestRem('p')]=null;
+    }
+    
+    turn='p'; aiThink=false;
+    document.getElementById('msgBox').textContent="Your Turn";
+    if(pPlaced>=9 && aPlaced>=9) phase='moving';
+    render();
+    checkWin();
+}
+
+function getBestMove(){
+    let moves = getAllMoves('a');
+    let best = -Infinity, choice = moves[0];
+    let depth = (cnt('a') + cnt('p') < 10) ? 6 : 4; // Dynamic Depth
+
+    for(let m of moves){
+        let score = minimax(applyMove(B,m,'a'), depth, -Infinity, Infinity, false);
+        if(score > best){ best=score; choice=m; }
+    }
+    return choice;
+}
+
+function minimax(board, depth, alpha, beta, isMax){
+    if(depth===0) return evaluate(board);
+    let moves = getAllMoves(isMax?'a':'p', board);
+    if(moves.length===0) return isMax ? -10000 : 10000;
+
+    if(isMax){
+        let maxEval = -Infinity;
+        for(let m of moves){
+            let ev = minimax(applyMove(board,m,'a'), depth-1, alpha, beta, false);
+            maxEval = Math.max(maxEval, ev);
+            alpha = Math.max(alpha, ev);
+            if(beta <= alpha) break;
+        }
+        return maxEval;
+    } else {
+        let minEval = Infinity;
+        for(let m of moves){
+            let ev = minimax(applyMove(board,m,'p'), depth-1, alpha, beta, true);
+            minEval = Math.min(minEval, ev);
+            beta = Math.min(beta, ev);
+            if(beta <= alpha) break;
+        }
+        return minEval;
+    }
+}
+
+// Heuristic: AI tries to form mills and block player
+function evaluate(b){
+    let score = 0;
+    let ac=0, pc=0;
+    b.forEach(v=>{if(v==='a')ac++; if(v==='p')pc++;});
+    score += (ac - pc) * 100;
+    
+    MILLS.forEach(m=>{
+        let am = m.filter(i=>b[i]==='a').length;
+        let pm = m.filter(i=>b[i]==='p').length;
+        if(am===3) score += 500;
+        if(pm===3) score -= 550;
+        if(am===2 && b[m.find(i=>!b[i])]===null) score += 50;
+        if(pm===2 && b[m.find(i=>!b[i])]===null) score -= 80;
+    });
+    return score;
+}
+
+// --- Utils ---
+function isMill(i,w,board=B){ return MILLS.some(m=>m.includes(i) && m.every(k=>board[k]===w)); }
+function cnt(w,board=B){ return board.filter(v=>v===w).length; }
+
+function getAllMoves(w, board=B){
+    let mvs = [];
+    if(phase==='placing' && (w==='p'?pPlaced:aPlaced)<9){
+        board.forEach((v,i)=>{ if(!v) mvs.push({to:i}); });
+    } else {
+        board.forEach((v,i)=>{
+            if(v===w){
+                let targets = cnt(w,board)===3 ? board.map((_,idx)=>idx).filter(idx=>!board[idx]) : ADJ[i].filter(j=>!board[j]);
+                targets.forEach(t=>mvs.push({from:i, to:t}));
+            }
+        });
+    }
+    return mvs;
+}
+
+function applyMove(board, move, w){
+    let nb = [...board];
+    if(move.from!==undefined) nb[move.from]=null;
+    nb[move.to]=w;
+    if(isMill(move.to,w,nb)){
+        let targets = nb.map((v,i)=>v===(w==='a'?'p':'a')?i:-1).filter(i=>i!==-1);
+        if(targets.length > 0) nb[targets[0]]=null;
+    }
+    return nb;
+}
+
+function getBestRem(w){
+    let targets = B.map((v,i)=>v===w?i:-1).filter(i=>i!==-1);
+    return targets.find(i=>!isMill(i,w)) || targets[0];
+}
+
+function checkWin(){
+    if(phase==='placing') return false;
+    let pw=false;
+    if(cnt('a')<3){ alert("You Won! Rs " + bet*2); bal+=bet; pw=true; }
+    if(cnt('p')<3){ alert("AI Won! You lost Rs " + bet); bal-=bet; pw=true; }
+    if(pw){ resetGame(); document.getElementById('balEl').textContent=bal; return true; }
+    return false;
+}
+
+render();
+</script>
+</body>
+</html>
