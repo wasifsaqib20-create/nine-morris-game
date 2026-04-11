@@ -2,1942 +2,673 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nine Men's Morris — Real Money Arena</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Nine Men's Morris | Real Money Arena</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Exo+2:wght@400;600;700&display=swap');
-
-*{margin:0;padding:0;box-sizing:border-box;}
-
-:root{
-  --gold:#FFD700;--gold2:#FFA500;
-  --green-dark:#0a2e1a;--green-mid:#1a5c30;--green-light:#2d8a50;
-  --green-glow:#00ff88;--red:#ff4444;--blue:#4488ff;
-  --white:#ffffff;--gray:#aaaaaa;--dark:#050f08;
-  --card-bg:rgba(255,255,255,0.05);--border:rgba(255,215,0,0.3);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-body{font-family:'Exo 2',sans-serif;background:linear-gradient(135deg,#050f08 0%,#0a2e1a 50%,#051a0d 100%);min-height:100vh;color:#fff;overflow-x:hidden;}
+:root {
+  --gold: #C8A84B;
+  --gold2: #E8C96A;
+  --gold3: #8B6914;
+  --gold-bright: #FFD700;
+  --bg: #050f05;
+  --bg2: #0a1f0a;
+  --green: #00ff88;
+  --green2: #1BAC4B;
+  --red: #EF5350;
+  --blue: #42A5F5;
+  --card: rgba(255, 255, 255, 0.04);
+  --border: rgba(200, 168, 75, 0.18);
+  --dim: #6a5a3a;
+  --wa: #25D366;
+  --easy: #2E7D32;
+  --med: #F57F17;
+  --hard: #B71C1C;
+}
 
-.screen{display:none;min-height:100vh;}
-.screen.active{display:block;}
+html, body {
+  height: 100%;
+  background: linear-gradient(145deg, #050f05, #030803);
+  font-family: 'Segoe UI', 'Exo 2', system-ui, -apple-system, sans-serif;
+  color: white;
+  overflow-x: hidden;
+}
 
-/* AUTH */
-#authScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:radial-gradient(ellipse at center,#0d3d1f 0%,#050f08 70%);}
-.auth-logo{text-align:center;margin-bottom:30px;}
-.auth-logo h1{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500,#FFD700);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:3px;animation:glowText 2s ease-in-out infinite alternate;}
-@keyframes glowText{from{filter:drop-shadow(0 0 10px rgba(255,215,0,0.5));}to{filter:drop-shadow(0 0 25px rgba(255,215,0,0.9));}}
-.auth-logo p{color:var(--green-glow);font-size:0.85rem;letter-spacing:4px;text-transform:uppercase;margin-top:5px;}
-.auth-tabs{display:flex;background:rgba(0,0,0,0.4);border-radius:50px;padding:4px;margin-bottom:25px;border:1px solid var(--border);}
-.auth-tab{padding:10px 30px;border-radius:50px;border:none;background:transparent;color:var(--gray);font-family:'Exo 2',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;transition:all 0.3s;}
-.auth-tab.active{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;}
-.auth-form{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(255,215,0,0.2);border-radius:20px;padding:30px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
-.form-group{margin-bottom:18px;}
-.form-group label{display:block;font-size:0.8rem;color:var(--gold);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;}
-.form-group input{width:100%;padding:12px 16px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.2);border-radius:10px;color:#fff;font-family:'Exo 2',sans-serif;font-size:0.95rem;transition:all 0.3s;outline:none;}
-.form-group input:focus{border-color:var(--gold);box-shadow:0 0 15px rgba(255,215,0,0.2);}
-.form-group input::placeholder{color:rgba(255,255,255,0.3);}
-.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:12px;color:#000;font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.3s;letter-spacing:1px;margin-top:5px;}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,215,0,0.4);}
-.form-error{color:var(--red);font-size:0.8rem;margin-top:8px;display:none;}
-.form-success{color:var(--green-glow);font-size:0.85rem;text-align:center;margin-top:10px;display:none;}
+/* animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 168, 75, 0.3); }
+  50% { box-shadow: 0 0 18px 4px rgba(200, 168, 75, 0.5); }
+}
+@keyframes winBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
 
-/* HEADER */
-.header{background:linear-gradient(135deg,#051a0d,#0a2e1a);border-bottom:2px solid rgba(255,215,0,0.3);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,0.5);}
-.header-logo{font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FFA500);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.header-balance{text-align:center;}
-.header-balance .label{font-size:0.65rem;color:var(--gray);letter-spacing:1px;}
-.header-balance .amount{font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--gold);font-weight:700;}
-.header-icons{display:flex;gap:12px;align-items:center;}
-.header-icon{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;padding:4px;transition:transform 0.2s;}
-.header-icon:hover{transform:scale(1.2);}
+/* auth */
+.auth-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #0d3d1f 0%, #020602 90%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.auth-card {
+  background: linear-gradient(145deg, #141f14, #0b120b);
+  border: 1px solid rgba(200, 168, 75, 0.3);
+  border-radius: 32px;
+  padding: 28px 22px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  animation: popIn 0.3s ease;
+}
+.auth-brand {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.auth-brand-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #162a10, #0a1a05);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  margin: 0 auto 12px;
+  border: 1px solid rgba(200, 168, 75, 0.4);
+}
+.auth-brand h1 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #C8A84B, #E8C96A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.auth-tabs {
+  display: flex;
+  background: #0a120a;
+  border-radius: 60px;
+  padding: 4px;
+  margin-bottom: 22px;
+}
+.auth-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  border-radius: 60px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.auth-tab.on {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #000;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+.field {
+  margin-bottom: 16px;
+}
+.field label {
+  font-size: 10px;
+  color: rgba(200,168,75,0.7);
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 5px;
+}
+.field input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(200,168,75,0.2);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: white;
+  font-size: 14px;
+  outline: none;
+}
+.field input:focus {
+  border-color: var(--gold);
+}
+.btn-auth {
+  width: 100%;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none;
+  padding: 14px;
+  border-radius: 60px;
+  font-weight: 800;
+  font-size: 14px;
+  color: #000;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: 0.2s;
+}
+.btn-auth:active { transform: scale(0.97); }
+.auth-switch {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 18px;
+}
+.auth-switch a {
+  color: var(--gold);
+  cursor: pointer;
+  font-weight: bold;
+}
+.err-msg {
+  background: rgba(239, 83, 80, 0.1);
+  border: 1px solid #EF5350;
+  border-radius: 12px;
+  padding: 8px;
+  font-size: 11px;
+  color: #EF9A9A;
+  margin-bottom: 12px;
+  display: none;
+}
 
-/* CHANCE BAR */
-.chance-bar-container{padding:8px 15px;background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,215,0,0.1);}
-.chance-bar-labels{display:flex;justify-content:space-between;font-size:0.7rem;margin-bottom:4px;}
-.chance-ai-label{color:#ff6666;}
-.chance-user-label{color:var(--green-glow);}
-.chance-bar-track{height:8px;background:rgba(255,255,255,0.1);border-radius:10px;overflow:hidden;position:relative;}
-.chance-bar-ai{height:100%;background:linear-gradient(90deg,#ff4444,#ff8888);border-radius:10px;transition:width 0.8s ease;position:absolute;left:0;top:0;}
-.chance-bar-user{height:100%;background:linear-gradient(90deg,#00ff88,#00cc66);border-radius:10px;transition:width 0.8s ease;position:absolute;right:0;top:0;}
+/* main app */
+#mainApp {
+  display: none;
+  padding-bottom: 70px;
+}
+.top-nav {
+  background: #0a1a0a;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(200,168,75,0.2);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.logo {
+  font-weight: 900;
+  font-size: 18px;
+  background: linear-gradient(135deg, #C8A84B, #E8C96A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.balance {
+  font-family: monospace;
+  font-weight: bold;
+  color: var(--gold);
+  font-size: 18px;
+}
+.user-avatar {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+}
 
-/* TABS */
-.tabs{display:flex;background:rgba(0,0,0,0.4);border-bottom:1px solid rgba(255,215,0,0.1);overflow-x:auto;scrollbar-width:none;}
-.tabs::-webkit-scrollbar{display:none;}
-.tab-btn{flex:1;min-width:70px;padding:12px 8px;background:none;border:none;color:var(--gray);font-family:'Exo 2',sans-serif;font-size:0.75rem;cursor:pointer;transition:all 0.3s;border-bottom:2px solid transparent;white-space:nowrap;}
-.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
-.tab-content{display:none;}
-.tab-content.active{display:block;}
+/* bottom nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #071707;
+  border-top: 1px solid rgba(200,168,75,0.2);
+  display: flex;
+  justify-content: space-around;
+  padding: 6px 0 8px;
+  z-index: 80;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: 0.2s;
+}
+.nav-item.active {
+  color: var(--gold);
+}
+.nav-item .icon {
+  font-size: 24px;
+}
 
-/* GAME TAB */
-.game-container{padding:15px;}
-.players-row{display:flex;gap:10px;margin-bottom:15px;}
-.player-card{flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:12px;text-align:center;transition:all 0.3s;}
-.player-card.active-player{border-color:var(--gold);box-shadow:0 0 20px rgba(255,215,0,0.3);background:rgba(255,215,0,0.08);}
-.player-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin:0 auto 6px;}
-.player-avatar.ai-avatar{background:linear-gradient(135deg,#ff4444,#cc0000);}
-.player-name{font-size:0.8rem;font-weight:700;color:#fff;}
-.player-pieces{font-size:0.7rem;color:var(--gray);margin-top:3px;}
+/* pages */
+.page {
+  display: none;
+  padding: 16px;
+  animation: fadeUp 0.25s ease;
+}
+.page.active {
+  display: block;
+}
 
-/* TIMER */
-.timer-container{text-align:center;margin-bottom:12px;}
-.timer-circle{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;border:3px solid var(--gold);font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:700;color:var(--gold);background:rgba(255,215,0,0.05);transition:all 0.3s;position:relative;}
-.timer-circle.urgent{border-color:var(--red);color:var(--red);animation:pulseRed 0.5s ease-in-out infinite alternate;}
-@keyframes pulseRed{from{box-shadow:0 0 5px rgba(255,68,68,0.3);}to{box-shadow:0 0 20px rgba(255,68,68,0.8);}}
-.timer-svg{position:absolute;top:-3px;left:-3px;width:70px;height:70px;transform:rotate(-90deg);}
-.timer-ring{fill:none;stroke:var(--gold);stroke-width:3;stroke-dasharray:201;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear;stroke-linecap:round;}
+/* game board */
+.board-container {
+  background: #1a150e;
+  border-radius: 28px;
+  padding: 12px;
+  margin: 12px 0;
+  box-shadow: 0 8px 28px black;
+}
+canvas {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: 18px;
+  cursor: pointer;
+  touch-action: none;
+}
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.3);
+  padding: 8px 12px;
+  border-radius: 60px;
+  margin-bottom: 10px;
+}
+.piece-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.piece-white, .piece-black {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.piece-white { background: radial-gradient(circle at 35% 35%, #fff, #ccc); }
+.piece-black { background: radial-gradient(circle at 35% 35%, #333, #000); border: 1px solid #666; }
+.badge {
+  background: rgba(200,168,75,0.15);
+  padding: 6px 12px;
+  border-radius: 40px;
+  font-size: 12px;
+}
+.status-bar {
+  background: #0f170f;
+  border-left: 3px solid var(--gold);
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 13px;
+  margin: 10px 0;
+}
+.bet-panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(200,168,75,0.2);
+  border-radius: 24px;
+  padding: 14px;
+  margin: 12px 0;
+}
+.bet-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+.bet-chip {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(200,168,75,0.3);
+  border-radius: 40px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.bet-chip.active {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: black;
+  border: none;
+}
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none;
+  border-radius: 60px;
+  padding: 12px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+}
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid rgba(200,168,75,0.4);
+  border-radius: 60px;
+  padding: 10px;
+  color: var(--gold);
+  font-weight: bold;
+  cursor: pointer;
+}
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e2a1e;
+  color: var(--gold);
+  padding: 8px 20px;
+  border-radius: 60px;
+  font-size: 13px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; }
 
-/* GAME STATUS */
-.game-status{text-align:center;padding:10px;background:rgba(0,0,0,0.3);border-radius:10px;margin-bottom:12px;font-size:0.85rem;font-weight:600;color:var(--gold);border:1px solid rgba(255,215,0,0.2);}
-
-/* BOARD */
-.board-wrapper{position:relative;width:100%;max-width:320px;margin:0 auto 15px;}
-.board-svg-container{width:100%;aspect-ratio:1;position:relative;}
-#gameBoardSVG{width:100%;height:100%;filter:drop-shadow(0 0 20px rgba(0,255,136,0.15));}
-.board-line{stroke:rgba(139,90,43,0.8);stroke-width:2.5;}
-.board-point{cursor:pointer;transition:all 0.2s;}
-.board-point circle.point-bg{fill:rgba(20,10,5,0.7);stroke:rgba(139,90,43,0.6);stroke-width:1.5;transition:all 0.2s;}
-.board-point:hover circle.point-bg{fill:rgba(255,215,0,0.2);stroke:var(--gold);}
-.board-point.valid-move circle.point-bg{fill:rgba(0,255,136,0.25);stroke:var(--green-glow);animation:pulseGreen 1s ease-in-out infinite;}
-@keyframes pulseGreen{0%,100%{stroke-opacity:0.6;}50%{stroke-opacity:1;}}
-.board-point.selected circle.point-bg{fill:rgba(255,215,0,0.35);stroke:var(--gold);stroke-width:3;}
-.board-point.mill-point circle.point-bg{fill:rgba(255,68,68,0.35);stroke:var(--red);}
-
-/* BET SECTION */
-.bet-section{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:12px;}
-.bet-section h3{font-size:0.8rem;color:var(--gold);letter-spacing:1px;margin-bottom:10px;text-transform:uppercase;}
-.bet-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-.bet-chip{padding:8px 14px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.3);border-radius:20px;color:#fff;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
-.bet-chip:hover,.bet-chip.selected{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;border-color:transparent;transform:scale(1.05);}
-.game-buttons{display:flex;gap:10px;}
-
-/* CONNECT-START BUTTON */
-.btn-connect{flex:2;padding:14px;background:linear-gradient(135deg,#00cc66,#009944);border:none;border-radius:12px;color:#fff;font-family:'Orbitron',monospace;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.3s;letter-spacing:1px;position:relative;overflow:hidden;}
-.btn-connect:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,204,102,0.4);}
-.btn-connect:active{transform:translateY(0);}
-.btn-restart{flex:1;padding:14px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:#fff;font-size:0.85rem;cursor:pointer;transition:all 0.3s;}
-.btn-restart:hover{background:rgba(255,255,255,0.2);}
-
-/* CONNECTING OVERLAY */
-.connecting-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:5000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:20px;}
-.connecting-overlay.active{display:flex;}
-.connecting-text{font-family:'Orbitron',monospace;font-size:1.5rem;color:var(--gold);text-align:center;animation:blink 0.8s ease-in-out infinite alternate;}
-@keyframes blink{from{opacity:0.6;}to{opacity:1;}}
-.connecting-countdown{font-family:'Orbitron',monospace;font-size:4rem;color:var(--green-glow);font-weight:900;}
-.connecting-dots{display:flex;gap:8px;margin-top:10px;}
-.connecting-dot{width:12px;height:12px;background:var(--gold);border-radius:50%;animation:dotBounce 1.2s ease-in-out infinite;}
-.connecting-dot:nth-child(2){animation-delay:0.2s;}
-.connecting-dot:nth-child(3){animation-delay:0.4s;}
-@keyframes dotBounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-15px);}}
-
-/* STATS BAR */
-.stats-bar{display:flex;gap:10px;margin-bottom:12px;}
-.stat-item{flex:1;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center;}
-.stat-label{font-size:0.65rem;color:var(--gray);letter-spacing:1px;}
-.stat-value{font-family:'Orbitron',monospace;font-size:0.95rem;color:var(--gold);font-weight:700;}
-
-/* PAYMENT — only 2 buttons */
-.payment-action-btns{display:flex;gap:12px;margin:12px 0;}
-.pay-action-btn{flex:1;padding:14px;border:none;border-radius:14px;font-family:'Orbitron',monospace;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.3s;letter-spacing:1px;}
-.pay-action-btn.deposit-btn{background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;}
-.pay-action-btn.deposit-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,215,0,0.4);}
-.pay-action-btn.withdraw-btn{background:linear-gradient(135deg,#ff4444,#cc0000);color:#fff;}
-.pay-action-btn.withdraw-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,68,68,0.4);}
-
-/* PAYMENT LOGOS — Real Style */
-.payment-logos-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0;}
-.pay-logo-real{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;min-width:52px;cursor:pointer;transition:all 0.2s;}
-.pay-logo-real:hover{border-color:var(--gold);background:rgba(255,215,0,0.1);}
-.pay-logo-real.selected{border-color:var(--gold);background:rgba(255,215,0,0.15);}
-.pay-logo-real span{font-size:0.6rem;color:var(--gray);}
-
-/* JazzCash Logo */
-.jazzcash-logo{width:36px;height:36px;border-radius:8px;background:#e83e8c;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.jazzcash-logo::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#e83e8c,#c2185b);}
-.jazzcash-logo svg{position:relative;z-index:1;}
-
-/* EasyPaisa Logo */
-.easypaisa-logo{width:36px;height:36px;border-radius:8px;background:#4CAF50;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
-.easypaisa-logo::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#4CAF50,#2E7D32);}
-.easypaisa-logo svg{position:relative;z-index:1;}
-
-/* Visa Logo */
-.visa-logo{width:36px;height:36px;border-radius:8px;background:#1a1f71;display:flex;align-items:center;justify-content:center;}
-
-/* Crypto Logo */
-.crypto-logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#f7931a,#e65c00);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:900;color:#fff;}
-
-/* QR logos */
-.qr-logo{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:900;color:#fff;}
-.qr-jazz{background:linear-gradient(135deg,#9c27b0,#6a1b9a);}
-.qr-easy{background:linear-gradient(135deg,#00897b,#004d40);}
-
-/* SPIN WHEEL */
-.spin-container{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;margin-bottom:12px;}
-.spin-wheel-wrapper{position:relative;width:180px;height:180px;margin:0 auto 15px;}
-.spin-wheel{width:180px;height:180px;border-radius:50%;position:relative;transition:transform 3s cubic-bezier(0.17,0.67,0.12,0.99);border:4px solid var(--gold);box-shadow:0 0 30px rgba(255,215,0,0.3);}
-.spin-pointer{position:absolute;top:-14px;left:50%;transform:translateX(-50%);font-size:1.4rem;color:var(--gold);z-index:10;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5));}
-.spin-btn{padding:12px 30px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:25px;color:#000;font-family:'Orbitron',monospace;font-size:0.9rem;font-weight:700;cursor:pointer;transition:all 0.3s;}
-.spin-btn:hover{transform:scale(1.05);}
-.spin-btn:disabled{opacity:0.5;cursor:not-allowed;}
-
-/* OFFERS */
-.offers-container{padding:15px;}
-.offer-card{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:12px;display:flex;align-items:center;gap:12px;transition:all 0.3s;}
-.offer-card:hover{border-color:var(--gold);transform:translateX(3px);}
-.offer-icon{width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,165,0,0.1));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
-.offer-info{flex:1;}
-.offer-title{font-weight:700;font-size:0.95rem;}
-.offer-desc{font-size:0.75rem;color:var(--gray);margin-top:3px;}
-.offer-btn{padding:8px 16px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:20px;color:#000;font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;}
-
-/* DEPOSIT TAB */
-.deposit-container{padding:15px;}
-.section-title{font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--gold);letter-spacing:2px;margin-bottom:12px;text-transform:uppercase;}
-.amount-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;}
-.amount-chip{padding:10px 16px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.3);border-radius:10px;color:#fff;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
-.amount-chip:hover,.amount-chip.selected{background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(255,165,0,0.1));border-color:var(--gold);}
-.custom-amount{width:100%;padding:12px 16px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.2);border-radius:10px;color:#fff;font-size:1rem;margin-bottom:15px;outline:none;font-family:'Exo 2',sans-serif;}
-.custom-amount:focus{border-color:var(--gold);}
-.promo-box{background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,165,0,0.05));border:1px solid rgba(255,215,0,0.3);border-radius:12px;padding:12px;margin-bottom:15px;}
-.promo-box h4{color:var(--gold);font-size:0.85rem;margin-bottom:8px;}
-.promo-item{font-size:0.75rem;color:var(--gray);padding:3px 0;}
-.promo-item span{color:var(--green-glow);font-weight:600;}
-.btn-deposit{width:100%;padding:14px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:12px;color:#000;font-family:'Orbitron',monospace;font-size:0.95rem;font-weight:700;cursor:pointer;transition:all 0.3s;margin-bottom:10px;}
-.btn-deposit:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(255,215,0,0.4);}
-.transaction-history{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:15px;}
-.tx-empty{color:var(--gray);font-size:0.85rem;text-align:center;padding:20px;}
-.tx-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
-.tx-item:last-child{border-bottom:none;}
-.tx-type{font-size:0.85rem;}
-.tx-amount{font-family:'Orbitron',monospace;font-size:0.85rem;}
-.tx-amount.positive{color:var(--green-glow);}
-.tx-amount.negative{color:var(--red);}
-
-/* SUPPORT */
-.support-container{padding:15px;}
-.support-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
-.support-option{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:20px 15px;text-align:center;cursor:pointer;transition:all 0.3s;}
-.support-option:hover{border-color:var(--gold);background:rgba(255,215,0,0.08);transform:translateY(-3px);}
-.support-option .s-icon{font-size:2rem;margin-bottom:8px;}
-.support-option .s-title{font-size:0.85rem;font-weight:700;}
-.support-option .s-desc{font-size:0.7rem;color:var(--gray);margin-top:4px;}
-.faq-section{margin-top:10px;}
-.faq-title{font-size:0.85rem;color:var(--gold);margin-bottom:10px;font-weight:700;}
-.faq-item{background:var(--card-bg);border:1px solid rgba(255,215,0,0.1);border-radius:10px;margin-bottom:8px;overflow:hidden;}
-.faq-question{padding:12px 15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:0.85rem;font-weight:600;}
-.faq-answer{padding:0 15px;max-height:0;overflow:hidden;transition:all 0.3s;font-size:0.8rem;color:var(--gray);line-height:1.6;}
-.faq-item.open .faq-answer{max-height:200px;padding:0 15px 12px;}
-.faq-arrow{transition:transform 0.3s;}
-.faq-item.open .faq-arrow{transform:rotate(180deg);}
-
-/* PROFILE */
-.profile-container{padding:15px;}
-.profile-header{background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,165,0,0.05));border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;margin-bottom:15px;}
-.profile-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#FFD700,#FFA500);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 10px;border:3px solid rgba(255,215,0,0.5);}
-.profile-name{font-size:1.1rem;font-weight:700;}
-.profile-email{font-size:0.8rem;color:var(--gray);margin-top:4px;}
-.profile-stats{display:flex;gap:10px;margin-top:15px;}
-.p-stat{flex:1;background:rgba(0,0,0,0.3);border-radius:10px;padding:10px;text-align:center;}
-.p-stat-val{font-family:'Orbitron',monospace;font-size:1rem;color:var(--gold);}
-.p-stat-label{font-size:0.65rem;color:var(--gray);margin-top:3px;}
-.profile-menu-item{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:15px;display:flex;align-items:center;gap:12px;margin-bottom:10px;cursor:pointer;transition:all 0.2s;}
-.profile-menu-item:hover{border-color:var(--gold);background:rgba(255,215,0,0.05);}
-.pmi-icon{font-size:1.3rem;}
-.pmi-info{flex:1;}
-.pmi-title{font-size:0.9rem;font-weight:600;}
-.pmi-subtitle{font-size:0.7rem;color:var(--gray);margin-top:2px;}
-.pmi-arrow{color:var(--gray);font-size:1rem;}
-.referral-card{background:linear-gradient(135deg,rgba(0,255,136,0.1),rgba(0,204,102,0.05));border:1px solid rgba(0,255,136,0.3);border-radius:14px;padding:15px;margin-bottom:12px;}
-.referral-code-display{background:rgba(0,0,0,0.4);border-radius:10px;padding:12px;text-align:center;margin:10px 0;}
-.referral-code{font-family:'Orbitron',monospace;font-size:1.3rem;color:var(--gold);letter-spacing:3px;}
-.referral-btns{display:flex;gap:8px;}
-.ref-btn{flex:1;padding:10px;border-radius:10px;border:none;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;}
-.ref-btn-wa{background:#25D366;color:#fff;}
-.ref-btn-copy{background:rgba(255,215,0,0.2);color:var(--gold);border:1px solid rgba(255,215,0,0.3);}
-.vip-card{border-radius:14px;padding:15px;margin-bottom:12px;border:2px solid;position:relative;overflow:hidden;}
-.vip-bronze{border-color:#cd7f32;background:linear-gradient(135deg,rgba(205,127,50,0.1),rgba(205,127,50,0.05));}
-.vip-silver{border-color:#c0c0c0;background:linear-gradient(135deg,rgba(192,192,192,0.1),rgba(192,192,192,0.05));}
-.vip-gold{border-color:#FFD700;background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,165,0,0.05));}
-.vip-badge{font-size:1.5rem;margin-bottom:8px;}
-.vip-name{font-size:1rem;font-weight:700;}
-.vip-benefits{font-size:0.75rem;color:var(--gray);margin:5px 0;}
-.vip-price{font-family:'Orbitron',monospace;font-size:1.1rem;color:var(--gold);}
-.vip-btn{width:100%;padding:10px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:10px;color:#000;font-weight:700;cursor:pointer;margin-top:10px;font-size:0.85rem;}
-
-/* BOTTOM NAV — Professional */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(180deg,#061a0d,#040d07);border-top:1px solid rgba(255,215,0,0.25);display:flex;z-index:50;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 20px rgba(0,0,0,0.5);}
-.nav-btn{flex:1;padding:10px 4px 8px;background:none;border:none;color:#888;cursor:pointer;transition:all 0.25s;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:0.62rem;font-family:'Exo 2',sans-serif;font-weight:600;letter-spacing:0.5px;position:relative;}
-.nav-btn .nav-icon{font-size:1.4rem;transition:all 0.25s;line-height:1;}
-.nav-btn.active{color:var(--gold);}
-.nav-btn.active .nav-icon{filter:drop-shadow(0 0 8px rgba(255,215,0,0.7));transform:translateY(-2px);}
-.nav-btn::after{content:'';position:absolute;bottom:0;left:20%;right:20%;height:2px;background:var(--gold);border-radius:2px;opacity:0;transition:opacity 0.25s;}
-.nav-btn.active::after{opacity:1;}
-
-/* MODALS */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;display:none;align-items:flex-end;justify-content:center;}
-.modal-overlay.active{display:flex;}
-.chat-modal{width:100%;max-width:480px;height:80vh;background:linear-gradient(180deg,#0a2e1a,#051a0d);border-radius:24px 24px 0 0;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(255,215,0,0.2);border-bottom:none;animation:slideUp 0.3s ease;}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.chat-header{padding:15px 20px;background:linear-gradient(135deg,#0d3d1f,#1a5c30);display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,215,0,0.2);}
-.chat-header-info{flex:1;}
-.chat-header-name{font-weight:700;font-size:1rem;}
-.chat-header-status{font-size:0.7rem;color:var(--green-glow);}
-.chat-close{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:4px;}
-.chat-replies-bar{padding:6px 15px;background:rgba(0,0,0,0.3);font-size:0.7rem;color:var(--gray);text-align:center;border-bottom:1px solid rgba(255,255,255,0.05);}
-.chat-messages{flex:1;overflow-y:auto;padding:15px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(255,215,0,0.3) transparent;}
-.chat-msg{max-width:80%;padding:10px 14px;border-radius:16px;font-size:0.85rem;line-height:1.5;animation:fadeInMsg 0.3s ease;}
-@keyframes fadeInMsg{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.chat-msg.ai{background:linear-gradient(135deg,rgba(0,255,136,0.1),rgba(0,204,102,0.05));border:1px solid rgba(0,255,136,0.2);border-bottom-left-radius:4px;align-self:flex-start;}
-.chat-msg.user{background:linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,165,0,0.1));border:1px solid rgba(255,215,0,0.2);border-bottom-right-radius:4px;align-self:flex-end;}
-.chat-msg .msg-time{font-size:0.65rem;color:var(--gray);margin-top:4px;}
-.chat-input-row{padding:12px 15px;display:flex;gap:10px;align-items:center;border-top:1px solid rgba(255,215,0,0.1);background:rgba(0,0,0,0.3);}
-.chat-input{flex:1;padding:10px 14px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,215,0,0.2);border-radius:20px;color:#fff;font-family:'Exo 2',sans-serif;font-size:0.85rem;outline:none;}
-.chat-input:focus{border-color:var(--gold);}
-.chat-gallery-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:#fff;transition:all 0.2s;}
-.chat-gallery-btn:hover{background:rgba(255,215,0,0.2);}
-.chat-send-btn{background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;color:#000;transition:all 0.2s;}
-.chat-send-btn:hover{transform:scale(1.1);}
-.chat-name-form{padding:20px;text-align:center;}
-.chat-name-form h3{font-size:1rem;color:var(--gold);margin-bottom:15px;}
-.chat-name-input{width:100%;padding:12px 16px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.3);border-radius:10px;color:#fff;font-family:'Exo 2',sans-serif;font-size:0.95rem;outline:none;margin-bottom:12px;}
-.chat-name-input:focus{border-color:var(--gold);}
-
-/* GAME OVER */
-.gameover-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;}
-.gameover-modal.active{display:flex;}
-.gameover-card{background:linear-gradient(135deg,#0a2e1a,#051a0d);border:2px solid var(--gold);border-radius:24px;padding:30px 25px;text-align:center;max-width:320px;width:100%;animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);}
-@keyframes popIn{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
-.gameover-emoji{font-size:4rem;margin-bottom:10px;}
-.gameover-title{font-family:'Orbitron',monospace;font-size:1.5rem;font-weight:900;margin-bottom:8px;}
-.gameover-title.win{color:var(--gold);}
-.gameover-title.lose{color:var(--red);}
-.gameover-desc{font-size:0.9rem;color:var(--gray);margin-bottom:20px;}
-.gameover-amount{font-family:'Orbitron',monospace;font-size:1.8rem;margin-bottom:20px;}
-.gameover-amount.positive{color:var(--green-glow);}
-.gameover-amount.negative{color:var(--red);}
-.gameover-btns{display:flex;gap:10px;}
-.btn-play-again{flex:1;padding:13px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:12px;color:#000;font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;cursor:pointer;}
-.btn-close-go{padding:13px 20px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;color:#fff;font-size:0.85rem;cursor:pointer;}
-
-/* WITHDRAW MODAL */
-.withdraw-modal{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1500;display:none;align-items:center;justify-content:center;padding:20px;}
-.withdraw-modal.active{display:flex;}
-.withdraw-card{background:linear-gradient(135deg,#0a2e1a,#051a0d);border:1px solid rgba(255,215,0,0.3);border-radius:20px;padding:25px;width:100%;max-width:360px;}
-.withdraw-card h3{color:var(--gold);font-size:1rem;margin-bottom:15px;}
-.w-label{font-size:0.75rem;color:var(--gray);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;}
-.w-input{width:100%;padding:11px 14px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.2);border-radius:10px;color:#fff;font-family:'Exo 2',sans-serif;font-size:0.9rem;outline:none;margin-bottom:12px;}
-.w-input:focus{border-color:var(--gold);}
-.w-method-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:15px;}
-.w-method-tab{padding:7px 12px;background:rgba(0,0,0,0.4);border:1px solid rgba(255,215,0,0.2);border-radius:8px;color:var(--gray);font-size:0.75rem;cursor:pointer;transition:all 0.2s;}
-.w-method-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,0.1);}
-.w-btns{display:flex;gap:10px;margin-top:5px;}
-.btn-w-submit{flex:1;padding:12px;background:linear-gradient(135deg,#FFD700,#FFA500);border:none;border-radius:10px;color:#000;font-weight:700;cursor:pointer;font-size:0.9rem;}
-.btn-w-cancel{padding:12px 18px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#fff;cursor:pointer;font-size:0.85rem;}
-
-/* CONFETTI */
-.confetti-container{position:fixed;inset:0;pointer-events:none;z-index:1999;overflow:hidden;}
-.confetti-piece{position:absolute;width:10px;height:10px;top:-10px;animation:confettiFall linear forwards;}
-@keyframes confettiFall{to{transform:translateY(110vh) rotate(720deg);opacity:0;}}
-
-/* TOAST */
-.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(0,0,0,0.9);border:1px solid rgba(255,215,0,0.4);border-radius:25px;padding:10px 20px;color:#fff;font-size:0.85rem;z-index:3000;opacity:0;transition:all 0.3s;white-space:nowrap;max-width:90vw;text-align:center;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-
-/* TYPING DOTS */
-.typing-dots{display:flex;gap:4px;padding:5px;}
-.typing-dot{width:6px;height:6px;background:var(--green-glow);border-radius:50%;animation:typingBounce 1.2s ease-in-out infinite;}
-.typing-dot:nth-child(2){animation-delay:0.2s;}
-.typing-dot:nth-child(3){animation-delay:0.4s;}
-@keyframes typingBounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-8px);}}
-
-.gallery-preview{max-width:200px;border-radius:10px;margin-top:6px;}
-.main-content{padding-bottom:75px;}
-
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.3);border-radius:2px;}
+/* deposit / spin */
+.payment-option {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(200,168,75,0.2);
+  border-radius: 18px;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.payment-option.selected {
+  border-color: var(--gold);
+  background: rgba(200,168,75,0.1);
+}
+.spin-wheel {
+  width: 260px;
+  height: 260px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #1f2a1f;
+  position: relative;
+}
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.2s;
+}
+.modal.open {
+  visibility: visible;
+  opacity: 1;
+}
+.modal-content {
+  background: linear-gradient(145deg, #141f14, #0a120a);
+  border: 1px solid var(--gold);
+  border-radius: 32px;
+  padding: 24px;
+  width: 300px;
+  text-align: center;
+}
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-<!-- CONFETTI -->
-<div class="confetti-container" id="confettiContainer"></div>
-
-<!-- CONNECTING OVERLAY -->
-<div class="connecting-overlay" id="connectingOverlay">
-  <div class="connecting-text" id="connectingText">People Connecting...</div>
-  <div class="connecting-countdown" id="connectingCountdown">5</div>
-  <div class="connecting-dots">
-    <div class="connecting-dot"></div>
-    <div class="connecting-dot"></div>
-    <div class="connecting-dot"></div>
-  </div>
-</div>
-
-<!-- ===== AUTH SCREEN ===== -->
-<div id="authScreen" class="screen active" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:radial-gradient(ellipse at center,#0d3d1f 0%,#050f08 70%);">
-  <div class="auth-logo">
-    <h1>♟ NINE MEN'S MORRIS</h1>
-    <p>⚔ Real Money Arena ⚔</p>
-  </div>
-  <div class="auth-tabs">
-    <button class="auth-tab active" onclick="switchAuth('login')">Login</button>
-    <button class="auth-tab" onclick="switchAuth('signup')">Sign Up</button>
-  </div>
-  <div class="auth-form">
-    <div id="loginForm">
-      <div class="form-group"><label>Email Address</label><input type="email" id="loginEmail" placeholder="Enter your email"></div>
-      <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Enter password"></div>
-      <div class="form-error" id="loginError">Invalid email or password.</div>
-      <button class="btn-primary" onclick="handleLogin()">🎮 Login to Game</button>
-      <div style="text-align:center;margin-top:12px;font-size:0.8rem;color:var(--gray)">No account? <span style="color:var(--gold);cursor:pointer" onclick="switchAuth('signup')">Sign Up Free</span></div>
+<!-- AUTH SCREEN -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="auth-brand-icon">♟️</div>
+      <h1>NINE MEN'S MORRIS</h1>
+      <div style="font-size: 10px; color: var(--green);">REAL MONEY ARENA</div>
     </div>
-    <div id="signupForm" style="display:none">
-      <div class="form-group"><label>Full Name</label><input type="text" id="signupName" placeholder="Enter your full name"></div>
-      <div class="form-group"><label>Email Address</label><input type="email" id="signupEmail" placeholder="Enter your email"></div>
-      <div class="form-group"><label>Password (min 8 characters)</label><input type="password" id="signupPassword" placeholder="Min 8 characters"></div>
-      <div class="form-error" id="signupError"></div>
-      <button class="btn-primary" onclick="handleSignup()">✨ Create Account — Free</button>
-      <div class="form-success" id="signupSuccess">🎉 Account created! Logging you in...</div>
-      <div style="text-align:center;margin-top:12px;font-size:0.8rem;color:var(--gray)">Have account? <span style="color:var(--gold);cursor:pointer" onclick="switchAuth('login')">Login</span></div>
+    <div class="auth-tabs">
+      <button class="auth-tab on" id="tabLoginBtn">LOGIN</button>
+      <button class="auth-tab" id="tabSignupBtn">SIGN UP</button>
+    </div>
+    <div id="loginPanel">
+      <div id="loginError" class="err-msg"></div>
+      <div class="field"><label>EMAIL</label><input type="email" id="loginEmail" placeholder="you@example.com"></div>
+      <div class="field"><label>PASSWORD</label><input type="password" id="loginPass" placeholder="••••••"></div>
+      <button class="btn-auth" id="doLoginBtn">LOGIN & PLAY</button>
+      <div class="auth-switch">New? <a id="gotoSignup">Create Account</a></div>
+    </div>
+    <div id="signupPanel" style="display: none;">
+      <div id="signupError" class="err-msg"></div>
+      <div class="field"><label>FULL NAME</label><input type="text" id="signupName" placeholder="John Doe"></div>
+      <div class="field"><label>EMAIL</label><input type="email" id="signupEmail" placeholder="you@example.com"></div>
+      <div class="field"><label>PASSWORD (min 8 chars)</label><input type="password" id="signupPass" placeholder="strong password"></div>
+      <button class="btn-auth" id="doSignupBtn">SIGNUP + FREE Rs 100</button>
+      <div class="auth-switch">Already have account? <a id="gotoLogin">Login</a></div>
     </div>
   </div>
 </div>
 
-<!-- ===== GAME SCREEN ===== -->
-<div id="gameScreen" class="screen">
-  <!-- HEADER -->
-  <div class="header">
-    <div class="header-logo">♟ NMM</div>
-    <div class="header-balance">
-      <div class="label">BALANCE</div>
-      <div class="amount" id="headerBalance">Rs 0</div>
+<!-- MAIN APP -->
+<div id="mainApp">
+  <div class="top-nav">
+    <div class="logo">♟️ NINE MORRIS</div>
+    <div class="balance">💰 Rs <span id="mainBalance">0</span></div>
+    <div class="user-avatar" id="avatarLetter">U</div>
+  </div>
+
+  <div id="homePage" class="page active">
+    <div style="background: #0f1a0f; border-radius: 24px; padding: 12px; margin-bottom: 12px;">
+      <div>🎯 YOUR STATS</div>
+      <div style="display: flex; justify-content: space-between; margin-top: 8px;">
+        <span>🏆 Wins: Rs <span id="statWins">0</span></span>
+        <span>🎮 Games: <span id="statGames">0</span></span>
+      </div>
     </div>
-    <div class="header-icons">
-      <button class="header-icon" onclick="toggleMusic()" id="musicBtn">🎵</button>
-      <button class="header-icon" onclick="showWithdraw()">💸</button>
+
+    <div class="game-header">
+      <div class="piece-count"><div class="piece-white"></div> <span id="playerPieces">9</span></div>
+      <div class="badge" id="phaseLabel">PLACING</div>
+      <div class="piece-count"><div class="piece-black"></div> <span id="aiPieces">9</span></div>
+    </div>
+
+    <div class="board-container">
+      <canvas id="gameCanvas" width="480" height="480" style="width:100%; height:auto; background:#0f0a05; border-radius: 20px;"></canvas>
+    </div>
+
+    <div class="status-bar">
+      <div>⚡ TURN: <strong id="turnText">Your turn</strong></div>
+      <div>🎲 PHASE: <span id="phaseDetail">placing</span> &nbsp;| 🤖 AI: <span id="aiDiffLabel">Hard</span></div>
+      <div id="gameMessage">Place your pieces on the board</div>
+    </div>
+
+    <div class="bet-panel">
+      <div style="font-size:12px; opacity:0.7;">💰 BET AMOUNT (Rs)</div>
+      <div class="bet-row" id="betButtons"></div>
+      <input type="number" id="customBet" placeholder="Custom amount" style="width:100%; background:#0f1a0f; border:1px solid rgba(200,168,75,0.3); border-radius:40px; padding:10px; color:white; margin: 8px 0;">
+      <div>Current Bet: Rs <span id="currentBet">0</span></div>
+      <button id="startGameBtn" class="btn-gold">🎮 START NEW GAME</button>
+      <button id="resetBoardBtn" class="btn-outline" style="margin-top:6px;">🔄 RESET BOARD</button>
+      <div style="font-size:10px; text-align:center; margin-top:8px;">5% commission | minimax AI</div>
     </div>
   </div>
 
-  <!-- CHANCE BAR -->
-  <div class="chance-bar-container">
-    <div class="chance-bar-labels">
-      <span class="chance-ai-label" id="aiChanceLabel">🤖 AI: <span id="aiChancePct">70</span>%</span>
-      <span style="color:var(--gray);font-size:0.65rem">WIN CHANCES</span>
-      <span class="chance-user-label"><span id="userChancePct">30</span>% :You 🧑</span>
-    </div>
-    <div class="chance-bar-track">
-      <div class="chance-bar-ai" id="chanceBarAI" style="width:70%"></div>
-      <div class="chance-bar-user" id="chanceBarUser" style="width:30%"></div>
+  <div id="depositPage" class="page">
+    <h3 style="margin-bottom: 12px;">💸 Deposit Funds</h3>
+    <div id="depositMethods"></div>
+    <div class="field"><label>Amount (Rs)</label><input type="number" id="depositAmount" placeholder="Min 100"></div>
+    <button id="depositNowBtn" class="btn-gold">Deposit via WhatsApp</button>
+    <button id="withdrawNavBtn" class="btn-outline" style="margin-top: 10px;">💸 Withdraw Funds</button>
+  </div>
+
+  <div id="spinPage" class="page">
+    <h3>🎡 Lucky Spin (every 12h)</h3>
+    <div style="text-align:center;">
+      <canvas id="spinCanvas" width="240" height="240" style="border-radius:50%; background:#1a1f1a; margin:10px auto;"></canvas>
+      <div id="spinTimer" style="color:var(--gold); margin:8px;">Ready to spin!</div>
+      <button id="spinBtn" class="btn-gold">🎲 SPIN NOW</button>
     </div>
   </div>
 
-  <!-- TABS -->
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('game')">🎮 Game</button>
-    <button class="tab-btn" onclick="switchTab('offers')">🎁 Offers</button>
-    <button class="tab-btn" onclick="switchTab('deposit')">💰 Deposit</button>
-    <button class="tab-btn" onclick="switchTab('support')">🎧 Support</button>
-    <button class="tab-btn" onclick="switchTab('profile')">👤 Profile</button>
+  <div id="profilePage" class="page">
+    <div style="text-align:center;">
+      <div class="user-avatar" style="width:80px; height:80px; font-size:32px; margin:0 auto 10px;" id="profileAvatar">U</div>
+      <h3 id="profileName">Player</h3>
+      <p id="profileEmail">user@example.com</p>
+      <div style="display:flex; justify-content:center; gap:16px; margin:16px 0;">
+        <div><span style="color:var(--gold); font-weight:bold;" id="profileBalance">0</span><br>Balance</div>
+        <div><span style="color:var(--gold);" id="profileWins">0</span><br>Winnings</div>
+        <div><span id="profileGames">0</span><br>Games</div>
+      </div>
+      <button id="logoutBtn" class="btn-outline">🚪 Logout</button>
+    </div>
   </div>
 
-  <div class="main-content">
-
-    <!-- GAME TAB -->
-    <div id="tab-game" class="tab-content active">
-      <div class="game-container">
-        <div class="stats-bar">
-          <div class="stat-item"><div class="stat-label">WINS</div><div class="stat-value" id="statWins">Rs 0</div></div>
-          <div class="stat-item"><div class="stat-label">GAMES</div><div class="stat-value" id="statGames">0</div></div>
-          <div class="stat-item"><div class="stat-label">BET</div><div class="stat-value" id="statBet">Rs 0</div></div>
-        </div>
-
-        <div class="players-row">
-          <div class="player-card active-player" id="userCard">
-            <div class="player-avatar">👤</div>
-            <div class="player-name" id="playerNameDisplay">You</div>
-            <div class="player-pieces">Pieces: <span id="userPiecesLeft">9</span></div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
-            <div class="timer-container">
-              <div class="timer-circle" id="timerCircle">
-                <svg class="timer-svg" viewBox="0 0 70 70">
-                  <circle class="timer-ring" id="timerRing" cx="35" cy="35" r="32"/>
-                </svg>
-                <span id="timerDisplay">20s</span>
-              </div>
-            </div>
-          </div>
-          <div class="player-card" id="aiCard">
-            <div class="player-avatar ai-avatar">🤖</div>
-            <div class="player-name">AI Engine</div>
-            <div class="player-pieces">Pieces: <span id="aiPiecesLeft">9</span></div>
-          </div>
-        </div>
-
-        <div class="game-status" id="gameStatus">Select bet and press CONNECT START</div>
-
-        <!-- BOARD -->
-        <div class="board-wrapper">
-          <div class="board-svg-container">
-            <svg id="gameBoardSVG" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <radialGradient id="boardBg" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#8B5E3C" stop-opacity="0.9"/>
-                  <stop offset="100%" stop-color="#5C3A1E" stop-opacity="0.95"/>
-                </radialGradient>
-                <radialGradient id="userGradient" cx="30%" cy="30%" r="70%">
-                  <stop offset="0%" stop-color="#FFE066"/>
-                  <stop offset="100%" stop-color="#CC8800"/>
-                </radialGradient>
-                <radialGradient id="aiGradient" cx="30%" cy="30%" r="70%">
-                  <stop offset="0%" stop-color="#ff8888"/>
-                  <stop offset="100%" stop-color="#cc0000"/>
-                </radialGradient>
-                <filter id="pieceShadow">
-                  <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.5"/>
-                </filter>
-              </defs>
-              <rect width="300" height="300" fill="url(#boardBg)" rx="12"/>
-              <!-- Wood grain lines -->
-              <line x1="0" y1="50" x2="300" y2="60" stroke="rgba(0,0,0,0.05)" stroke-width="8"/>
-              <line x1="0" y1="120" x2="300" y2="130" stroke="rgba(0,0,0,0.04)" stroke-width="6"/>
-              <line x1="0" y1="190" x2="300" y2="200" stroke="rgba(0,0,0,0.05)" stroke-width="8"/>
-              <line x1="0" y1="250" x2="300" y2="260" stroke="rgba(0,0,0,0.04)" stroke-width="6"/>
-              <g id="boardLines"></g>
-              <g id="boardPoints"></g>
-            </svg>
-          </div>
-        </div>
-
-        <!-- BET SECTION -->
-        <div class="bet-section">
-          <h3>🎯 Select Bet Amount (Rs)</h3>
-          <div class="bet-chips">
-            <div class="bet-chip" onclick="selectBet(this,0)">Free</div>
-            <div class="bet-chip" onclick="selectBet(this,20)">20</div>
-            <div class="bet-chip" onclick="selectBet(this,40)">40</div>
-            <div class="bet-chip" onclick="selectBet(this,60)">60</div>
-            <div class="bet-chip" onclick="selectBet(this,100)">100</div>
-            <div class="bet-chip" onclick="selectBet(this,200)">200</div>
-            <div class="bet-chip" onclick="selectBet(this,500)">500</div>
-            <div class="bet-chip" onclick="selectBet(this,1000)">1K</div>
-            <div class="bet-chip" onclick="selectBet(this,5000)">5K</div>
-          </div>
-          <div class="game-buttons">
-            <button class="btn-connect" id="connectBtn" onclick="connectStart()">🔗 CONNECT START</button>
-            <button class="btn-restart" onclick="resetGame()">🔄 RESTART</button>
-          </div>
-        </div>
-
-        <!-- PAYMENT — 2 buttons only -->
-        <div style="text-align:center;font-size:0.7rem;color:var(--gray);margin-bottom:8px;letter-spacing:1px">QUICK ACTIONS</div>
-        <div class="payment-action-btns">
-          <button class="pay-action-btn deposit-btn" onclick="switchTab('deposit')">💰 DEPOSIT</button>
-          <button class="pay-action-btn withdraw-btn" onclick="showWithdraw()">💸 WITHDRAW</button>
-        </div>
-
-        <!-- PAYMENT LOGOS — Real -->
-        <div style="text-align:center;font-size:0.7rem;color:var(--gray);margin-bottom:8px;letter-spacing:1px">ACCEPTED PAYMENTS</div>
-        <div class="payment-logos-row">
-          <!-- JazzCash Real Logo -->
-          <div class="pay-logo-real" onclick="selectPayment('jazzcash')">
-            <div class="jazzcash-logo">
-              <svg width="28" height="20" viewBox="0 0 60 40">
-                <text x="2" y="28" font-family="Arial" font-weight="900" font-size="22" fill="white">JC</text>
-              </svg>
-            </div>
-            <span>JazzCash</span>
-          </div>
-          <!-- EasyPaisa Real Logo -->
-          <div class="pay-logo-real" onclick="selectPayment('easypaisa')">
-            <div class="easypaisa-logo">
-              <svg width="28" height="20" viewBox="0 0 60 40">
-                <text x="2" y="28" font-family="Arial" font-weight="900" font-size="22" fill="white">EP</text>
-              </svg>
-            </div>
-            <span>EasyPaisa</span>
-          </div>
-          <!-- Jazz QR -->
-          <div class="pay-logo-real" onclick="selectPayment('jazzqr')">
-            <div class="qr-logo qr-jazz">
-              <svg width="32" height="32" viewBox="0 0 32 32">
-                <rect x="2" y="2" width="12" height="12" rx="2" fill="white"/>
-                <rect x="18" y="2" width="12" height="12" rx="2" fill="white"/>
-                <rect x="2" y="18" width="12" height="12" rx="2" fill="white"/>
-                <rect x="5" y="5" width="6" height="6" fill="#9c27b0"/>
-                <rect x="21" y="5" width="6" height="6" fill="#9c27b0"/>
-                <rect x="5" y="21" width="6" height="6" fill="#9c27b0"/>
-                <rect x="18" y="18" width="4" height="4" fill="white"/>
-                <rect x="24" y="18" width="6" height="4" fill="white"/>
-                <rect x="18" y="24" width="4" height="6" fill="white"/>
-                <rect x="24" y="24" width="6" height="6" fill="white"/>
-              </svg>
-            </div>
-            <span>Jazz-QR</span>
-          </div>
-          <!-- Easy QR -->
-          <div class="pay-logo-real" onclick="selectPayment('easyqr')">
-            <div class="qr-logo qr-easy">
-              <svg width="32" height="32" viewBox="0 0 32 32">
-                <rect x="2" y="2" width="12" height="12" rx="2" fill="white"/>
-                <rect x="18" y="2" width="12" height="12" rx="2" fill="white"/>
-                <rect x="2" y="18" width="12" height="12" rx="2" fill="white"/>
-                <rect x="5" y="5" width="6" height="6" fill="#00897b"/>
-                <rect x="21" y="5" width="6" height="6" fill="#00897b"/>
-                <rect x="5" y="21" width="6" height="6" fill="#00897b"/>
-                <rect x="18" y="18" width="4" height="4" fill="white"/>
-                <rect x="24" y="18" width="6" height="4" fill="white"/>
-                <rect x="18" y="24" width="4" height="6" fill="white"/>
-                <rect x="24" y="24" width="6" height="6" fill="white"/>
-              </svg>
-            </div>
-            <span>Easy-QR</span>
-          </div>
-          <!-- VISA Real -->
-          <div class="pay-logo-real" onclick="selectPayment('visa')">
-            <div class="visa-logo">
-              <svg width="36" height="24" viewBox="0 0 60 40">
-                <rect width="60" height="40" rx="4" fill="#1a1f71"/>
-                <text x="5" y="28" font-family="Arial" font-weight="900" font-size="20" font-style="italic" fill="#FFD700">VISA</text>
-              </svg>
-            </div>
-            <span>Card</span>
-          </div>
-          <!-- Crypto -->
-          <div class="pay-logo-real" onclick="selectPayment('crypto')">
-            <div class="crypto-logo">₿</div>
-            <span>Crypto</span>
-          </div>
-        </div>
-
-        <div class="transaction-history" style="margin-top:12px">
-          <div class="section-title">📜 Transaction History</div>
-          <div id="txList"><div class="tx-empty">No transactions yet</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- OFFERS TAB -->
-    <div id="tab-offers" class="tab-content">
-      <div class="offers-container">
-        <div class="section-title">🎁 Special Offers</div>
-        <div class="offer-card"><div class="offer-icon">🎉</div><div class="offer-info"><div class="offer-title">Welcome Bonus!</div><div class="offer-desc">Get Rs 100 FREE on signup</div></div><button class="offer-btn" onclick="claimBonus(100,'Welcome Bonus')">Claim</button></div>
-        <div class="offer-card"><div class="offer-icon">📅</div><div class="offer-info"><div class="offer-title">Daily Login Bonus</div><div class="offer-desc">Login every day to earn up to Rs 50</div></div><button class="offer-btn" onclick="claimBonus(50,'Daily Login')">Claim</button></div>
-        <div class="offer-card"><div class="offer-icon">👥</div><div class="offer-info"><div class="offer-title">Refer & Earn</div><div class="offer-desc">Get Rs 20 per friend who deposits</div></div><button class="offer-btn" onclick="switchTab('profile')">Refer</button></div>
-        <div class="offer-card"><div class="offer-icon">💰</div><div class="offer-info"><div class="offer-title">Deposit Bonus</div><div class="offer-desc">10% extra on first deposit ≥ Rs 500</div></div><button class="offer-btn" onclick="switchTab('deposit')">Deposit</button></div>
-        <div class="offer-card"><div class="offer-icon">🎡</div><div class="offer-info"><div class="offer-title">Lucky Spin Wheel</div><div class="offer-desc">Spin every 12 hours for free rewards</div></div><button class="offer-btn" onclick="switchTab('profile')">Spin</button></div>
-      </div>
-    </div>
-
-    <!-- DEPOSIT TAB -->
-    <div id="tab-deposit" class="tab-content">
-      <div class="deposit-container">
-        <div class="section-title">💰 Deposit Funds</div>
-        <div class="payment-logos-row" style="justify-content:flex-start;margin-bottom:15px">
-          <div class="pay-logo-real" id="dep-jazzcash" onclick="selectDepMethod('jazzcash')"><div class="jazzcash-logo"><svg width="28" height="20" viewBox="0 0 60 40"><text x="2" y="28" font-family="Arial" font-weight="900" font-size="22" fill="white">JC</text></svg></div><span>JazzCash</span></div>
-          <div class="pay-logo-real" id="dep-easypaisa" onclick="selectDepMethod('easypaisa')"><div class="easypaisa-logo"><svg width="28" height="20" viewBox="0 0 60 40"><text x="2" y="28" font-family="Arial" font-weight="900" font-size="22" fill="white">EP</text></svg></div><span>EasyPaisa</span></div>
-          <div class="pay-logo-real" id="dep-jazzqr" onclick="selectDepMethod('jazzqr')"><div class="qr-logo qr-jazz"><svg width="32" height="32" viewBox="0 0 32 32"><rect x="2" y="2" width="12" height="12" rx="2" fill="white"/><rect x="18" y="2" width="12" height="12" rx="2" fill="white"/><rect x="2" y="18" width="12" height="12" rx="2" fill="white"/><rect x="5" y="5" width="6" height="6" fill="#9c27b0"/><rect x="21" y="5" width="6" height="6" fill="#9c27b0"/><rect x="5" y="21" width="6" height="6" fill="#9c27b0"/><rect x="18" y="18" width="4" height="4" fill="white"/><rect x="24" y="18" width="6" height="4" fill="white"/><rect x="18" y="24" width="4" height="6" fill="white"/><rect x="24" y="24" width="6" height="6" fill="white"/></svg></div><span>Jazz-QR</span></div>
-          <div class="pay-logo-real" id="dep-easyqr" onclick="selectDepMethod('easyqr')"><div class="qr-logo qr-easy"><svg width="32" height="32" viewBox="0 0 32 32"><rect x="2" y="2" width="12" height="12" rx="2" fill="white"/><rect x="18" y="2" width="12" height="12" rx="2" fill="white"/><rect x="2" y="18" width="12" height="12" rx="2" fill="white"/><rect x="5" y="5" width="6" height="6" fill="#00897b"/><rect x="21" y="5" width="6" height="6" fill="#00897b"/><rect x="5" y="21" width="6" height="6" fill="#00897b"/><rect x="18" y="18" width="4" height="4" fill="white"/><rect x="24" y="18" width="6" height="4" fill="white"/><rect x="18" y="24" width="4" height="6" fill="white"/><rect x="24" y="24" width="6" height="6" fill="white"/></svg></div><span>Easy-QR</span></div>
-          <div class="pay-logo-real" id="dep-visa" onclick="selectDepMethod('visa')"><div class="visa-logo"><svg width="36" height="24" viewBox="0 0 60 40"><rect width="60" height="40" rx="4" fill="#1a1f71"/><text x="5" y="28" font-family="Arial" font-weight="900" font-size="20" font-style="italic" fill="#FFD700">VISA</text></svg></div><span>Card</span></div>
-          <div class="pay-logo-real" id="dep-crypto" onclick="selectDepMethod('crypto')"><div class="crypto-logo">₿</div><span>Crypto</span></div>
-        </div>
-        <div class="amount-chips">
-          <div class="amount-chip" onclick="selectDepAmount(this,200)">200</div>
-          <div class="amount-chip" onclick="selectDepAmount(this,500)">500</div>
-          <div class="amount-chip" onclick="selectDepAmount(this,1000)">1,000</div>
-          <div class="amount-chip" onclick="selectDepAmount(this,3000)">3,000</div>
-          <div class="amount-chip" onclick="selectDepAmount(this,5000)">5,000</div>
-          <div class="amount-chip" onclick="selectDepAmount(this,10000)">10,000</div>
-          <div class="amount-chip" onclick="selectDepAmount(this,30000)">30,000</div>
-          <div class="amount-chip" onclick="selectDepAmount(this,50000)">50,000</div>
-        </div>
-        <input type="number" class="custom-amount" id="depAmount" placeholder="Enter amount (Rs)" min="200">
-        <div class="promo-box">
-          <h4>🎁 Deposit Promotions</h4>
-          <div class="promo-item">⚡ <span>Rs 30–200 Reward</span> — First Deposit ≥ Rs 200</div>
-          <div class="promo-item">⚡ <span>Rs 7–777 Reward</span> — Single Deposit ≥ Rs 500</div>
-          <div class="promo-item">⚡ <span>Rs 100–1,000 Reward</span> — First Deposit ≥ Rs 1,000</div>
-        </div>
-        <button class="btn-deposit" onclick="processDeposit()">💳 Deposit Now</button>
-        <div class="transaction-history" style="margin-top:15px">
-          <div class="section-title">📜 History</div>
-          <div id="txList2"><div class="tx-empty">No transactions yet</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SUPPORT TAB -->
-    <div id="tab-support" class="tab-content">
-      <div class="support-container">
-        <div class="section-title">🎧 Customer Support</div>
-        <div class="support-options">
-          <div class="support-option" onclick="openChatModal()"><div class="s-icon">🤖</div><div class="s-title">AI Assistant</div><div class="s-desc">24/7 • Always Online</div></div>
-          <div class="support-option" onclick="openOnlineService()"><div class="s-icon">💬</div><div class="s-title">Online Service</div><div class="s-desc">Live Chat Support</div></div>
-          <div class="support-option" onclick="openWhatsApp()"><div class="s-icon">📱</div><div class="s-title">WhatsApp</div><div class="s-desc">03299240169</div></div>
-          <div class="support-option" onclick="openTelegram()"><div class="s-icon">✈️</div><div class="s-title">Telegram</div><div class="s-desc">03299240169</div></div>
-        </div>
-        <div class="faq-section">
-          <div class="faq-title">❓ Frequently Asked Questions</div>
-          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span>🎮 How does Nine Men's Morris work?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Place 9 pieces on the board. Form a "mill" (3 in a row) to remove opponent's piece. Win by reducing opponent to 2 pieces or blocking all moves!</div></div>
-          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span>💸 How to cashout?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Tap the 💸 icon or go to Deposit tab. Withdrawals processed within 24 hours via WhatsApp: 03299240169</div></div>
-          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span>💰 How to deposit?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Go to Deposit tab, choose JazzCash, EasyPaisa, or any method, enter amount and tap Deposit Now.</div></div>
-          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span>📧 Contact Email?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Email us at: mrbanujunior@gmail.com — We reply within a few hours!</div></div>
-          <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-question"><span>❓ Other questions?</span><span class="faq-arrow">▼</span></div><div class="faq-answer">Contact us on WhatsApp: 03299240169 or Email: mrbanujunior@gmail.com — Available 24/7!</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROFILE TAB -->
-    <div id="tab-profile" class="tab-content">
-      <div class="profile-container">
-        <div class="profile-header">
-          <div class="profile-avatar">👤</div>
-          <div class="profile-name" id="profileName">Player</div>
-          <div class="profile-email" id="profileEmail">player@email.com</div>
-          <div class="profile-stats">
-            <div class="p-stat"><div class="p-stat-val" id="profileBalance">Rs 0</div><div class="p-stat-label">BALANCE</div></div>
-            <div class="p-stat"><div class="p-stat-val" id="profileGames">0</div><div class="p-stat-label">GAMES</div></div>
-            <div class="p-stat"><div class="p-stat-val" id="profileWinnings">Rs 0</div><div class="p-stat-label">WINNINGS</div></div>
-          </div>
-        </div>
-
-        <div class="referral-card">
-          <div style="font-weight:700;color:var(--green-glow);margin-bottom:5px">👥 Refer & Earn</div>
-          <div style="font-size:0.75rem;color:var(--gray);margin-bottom:8px">Earn Rs 20 per friend who deposits</div>
-          <div class="referral-code-display"><div style="font-size:0.7rem;color:var(--gray);margin-bottom:4px">YOUR REFERRAL CODE</div><div class="referral-code" id="referralCode">NINE789</div></div>
-          <div class="referral-btns"><button class="ref-btn ref-btn-wa" onclick="openWhatsApp()">📱 Share on WhatsApp</button><button class="ref-btn ref-btn-copy" onclick="copyReferral()">📋 Copy Code</button></div>
-        </div>
-
-        <!-- SPIN WHEEL -->
-        <div class="spin-container">
-          <div style="font-weight:700;color:var(--gold);margin-bottom:10px">🎡 Lucky Spin Wheel</div>
-          <div class="spin-wheel-wrapper">
-            <div class="spin-pointer">▼</div>
-            <canvas id="spinCanvas" width="180" height="180" style="border-radius:50%;border:4px solid var(--gold);box-shadow:0 0 30px rgba(255,215,0,0.3);"></canvas>
-          </div>
-          <div style="font-size:0.75rem;color:var(--gray);margin-bottom:12px">⏰ One spin every 12 hours</div>
-          <button class="spin-btn" id="spinBtn" onclick="spinWheel()">🎰 SPIN NOW!</button>
-        </div>
-
-        <!-- VIP -->
-        <div style="margin-bottom:12px">
-          <div class="section-title">👑 VIP Membership</div>
-          <div class="vip-card vip-bronze"><div class="vip-badge">🥉</div><div class="vip-name">Bronze VIP</div><div class="vip-benefits">5% cashback • Priority withdrawal</div><div class="vip-price">Rs 500 / month</div><button class="vip-btn" onclick="openWhatsApp()">Get via WhatsApp</button></div>
-          <div class="vip-card vip-silver"><div class="vip-badge">🥈</div><div class="vip-name">Silver VIP</div><div class="vip-benefits">10% cashback • Dedicated support</div><div class="vip-price">Rs 1,500 / month</div><button class="vip-btn" onclick="openWhatsApp()">Get via WhatsApp</button></div>
-          <div class="vip-card vip-gold"><div class="vip-badge">🥇</div><div class="vip-name">Gold VIP</div><div class="vip-benefits">20% cashback • Zero commission</div><div class="vip-price">Rs 5,000 / month</div><button class="vip-btn" onclick="openWhatsApp()">Get via WhatsApp</button></div>
-        </div>
-
-        <div class="profile-menu-item" onclick="showWithdraw()"><div class="pmi-icon">💰</div><div class="pmi-info"><div class="pmi-title">Deposit / Withdraw</div><div class="pmi-subtitle">Add or remove funds</div></div><div class="pmi-arrow">›</div></div>
-        <div class="profile-menu-item" onclick="handleLogout()"><div class="pmi-icon">🚪</div><div class="pmi-info"><div class="pmi-title">Logout</div><div class="pmi-subtitle">Sign out of your account</div></div><div class="pmi-arrow">›</div></div>
-      </div>
-    </div>
-
-  </div><!-- end main-content -->
-
-  <!-- BOTTOM NAV -->
   <div class="bottom-nav">
-    <button class="nav-btn active" onclick="switchTab('game')" id="nav-game"><span class="nav-icon">🏠</span>Home</button>
-    <button class="nav-btn" onclick="switchTab('offers')" id="nav-offers"><span class="nav-icon">🎁</span>Offers</button>
-    <button class="nav-btn" onclick="switchTab('deposit')" id="nav-deposit"><span class="nav-icon">💰</span>Deposit</button>
-    <button class="nav-btn" onclick="switchTab('support')" id="nav-support"><span class="nav-icon">🎧</span>Support</button>
-    <button class="nav-btn" onclick="switchTab('profile')" id="nav-profile"><span class="nav-icon">👤</span>Profile</button>
+    <div class="nav-item active" data-page="home">🎮 Game</div>
+    <div class="nav-item" data-page="deposit">💰 Deposit</div>
+    <div class="nav-item" data-page="spin">🎡 Spin</div>
+    <div class="nav-item" data-page="profile">👤 Profile</div>
   </div>
 </div>
 
-<!-- CHAT MODAL -->
-<div class="modal-overlay" id="chatModal">
-  <div class="chat-modal">
-    <div class="chat-header"><div style="font-size:1.5rem">🤖</div><div class="chat-header-info"><div class="chat-header-name">Nine Morris AI</div><div class="chat-header-status">● Online • Smart Assistant</div></div><button class="chat-close" onclick="closeChatModal()">✕</button></div>
-    <div class="chat-replies-bar">Replies remaining: <span id="repliesLeft">7</span>/7</div>
-    <div class="chat-messages" id="chatMessages"></div>
-    <div class="chat-input-row">
-      <label class="chat-gallery-btn"><🖼<input type="file" accept="image/*" style="display:none" onchange="handleGalleryImage(event)"></label>
-      <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendChat()">
-      <button class="chat-send-btn" onclick="sendChat()">➤</button>
-    </div>
-  </div>
-</div>
-
-<!-- ONLINE SERVICE MODAL -->
-<div class="modal-overlay" id="onlineServiceModal">
-  <div class="chat-modal">
-    <div class="chat-header"><div style="font-size:1.5rem">💬</div><div class="chat-header-info"><div class="chat-header-name">Online Service</div><div class="chat-header-status">● Live Support</div></div><button class="chat-close" onclick="closeOnlineService()">✕</button></div>
-    <div id="nameFormSection">
-      <div class="chat-name-form">
-        <h3>👋 Welcome to Nine Men's Morris Support</h3>
-        <p style="font-size:0.8rem;color:var(--gray);margin-bottom:15px">Please enter your name to start chatting</p>
-        <input type="text" class="chat-name-input" id="visitorName" placeholder="Enter your name...">
-        <button class="btn-primary" onclick="startOnlineChat()">💬 Start Chatting</button>
-      </div>
-    </div>
-    <div id="onlineChatSection" style="display:none;flex:1;flex-direction:column">
-      <div class="chat-replies-bar">Replies remaining: <span id="onlineRepliesLeft">7</span>/7</div>
-      <div class="chat-messages" id="onlineChatMessages" style="flex:1"></div>
-      <div class="chat-input-row">
-        <label class="chat-gallery-btn">🖼<input type="file" accept="image/*" style="display:none" onchange="handleOnlineGalleryImage(event)"></label>
-        <input type="text" class="chat-input" id="onlineChatInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendOnlineChat()">
-        <button class="chat-send-btn" onclick="sendOnlineChat()">➤</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- GAME OVER MODAL -->
-<div class="gameover-modal" id="gameoverModal">
-  <div class="gameover-card">
-    <div class="gameover-emoji" id="gameoverEmoji">🏆</div>
-    <div class="gameover-title" id="gameoverTitle">YOU WIN!</div>
-    <div class="gameover-desc" id="gameoverDesc">Amazing! You defeated the AI!</div>
-    <div class="gameover-amount" id="gameoverAmount">+Rs 0</div>
-    <div class="gameover-btns"><button class="btn-play-again" onclick="playAgain()">🎮 PLAY AGAIN</button><button class="btn-close-go" onclick="closeGameover()">Close</button></div>
-  </div>
-</div>
-
-<!-- WITHDRAW MODAL -->
-<div class="withdraw-modal" id="withdrawModal">
-  <div class="withdraw-card">
-    <h3>💸 Withdraw Funds</h3>
-    <p style="font-size:0.75rem;color:var(--gray);margin-bottom:15px">Processed within 24 hours • WhatsApp: 03299240169</p>
-    <div class="w-label">Method</div>
-    <div class="w-method-tabs">
-      <div class="w-method-tab active" onclick="selectWMethod(this,'JazzCash')">JazzCash</div>
-      <div class="w-method-tab" onclick="selectWMethod(this,'EasyPaisa')">EasyPaisa</div>
-      <div class="w-method-tab" onclick="selectWMethod(this,'Bank')">Bank</div>
-      <div class="w-method-tab" onclick="selectWMethod(this,'Crypto')">Crypto</div>
-    </div>
-    <div class="w-label">Account Number</div>
-    <input type="text" class="w-input" id="wAccountNo" placeholder="Enter account number">
-    <div class="w-label">Amount (Rs)</div>
-    <input type="number" class="w-input" id="wAmount" placeholder="Enter amount">
-    <div class="w-btns"><button class="btn-w-submit" onclick="submitWithdraw()">Send Request</button><button class="btn-w-cancel" onclick="closeWithdraw()">Cancel</button></div>
+<div id="toastMsg" class="toast"></div>
+<div id="resultModal" class="modal">
+  <div class="modal-content">
+    <div id="modalIcon" style="font-size:48px;">🏆</div>
+    <h2 id="modalTitle">YOU WIN!</h2>
+    <p id="modalDetail"></p>
+    <button id="closeModalBtn" class="btn-gold">Play Again</button>
   </div>
 </div>
 
 <script>
-// ============================================================
-// BOARD POSITIONS & RULES
-// ============================================================
-const POSITIONS=[
-  [20,20],[150,20],[280,20],
-  [55,55],[150,55],[245,55],
-  [90,90],[150,90],[210,90],
-  [20,150],[55,150],[90,150],
-  [210,150],[245,150],[280,150],
-  [90,210],[150,210],[210,210],
-  [55,245],[150,245],[245,245],
-  [20,280],[150,280],[280,280]
-];
-
-const ADJACENT=[
-  [1,9],[0,2,4],[1,14],
-  [4,10],[3,5,1,7],[4,13],
-  [7,11],[6,8,4],[7,12],
-  [0,10,21],[9,11,18],[10,15,6],
-  [8,13,17],[12,14,20],[13,2,23],
-  [11,16],[15,17,19],[16,12],
-  [10,19],[18,20,22],[19,13],
-  [9,22],[21,23,19],[22,14]
-];
-
-const MILLS=[
-  [0,1,2],[3,4,5],[6,7,8],
-  [15,16,17],[18,19,20],[21,22,23],
-  [0,9,21],[3,10,18],[6,11,15],
-  [8,12,17],[5,13,20],[2,14,23],
-  [1,4,7],[16,19,22],[9,10,11],[12,13,14]
-];
-
-// ============================================================
-// STATE
-// ============================================================
-let currentUser=null;
-let users=JSON.parse(localStorage.getItem('nmm_users')||'{}');
-let board=new Array(24).fill(null);
-let phase='placing';
-let turn='user';
-let userPieces=9,aiPieces=9,userOnBoard=0,aiOnBoard=0;
-let selectedPos=-1,validMoves=[];
-let gameActive=false,removingPiece=false;
-let currentBet=0;
-let timerInterval=null,timerValue=20;
-let aiChance=70,userChance=30;
-let chatReplies=7,onlineReplies=7;
-let musicPlaying=false,spinUsed=false;
-let transactions=[],totalWinnings=0,totalGames=0;
-let selectedPayment='jazzcash',selectedDepMethodVar='jazzcash',selectedWMethodVar='JazzCash';
-let spinRotation=0;
-
-// Spin wheel prizes
-const SPIN_PRIZES=[100,200,400,1000,10000,15000,50,500];
-const SPIN_COLORS=['#FFD700','#ff4444','#4CAF50','#4488ff','#ff8c00','#9c27b0','#00bcd4','#e91e63'];
-
-// ============================================================
-// AUDIO
-// ============================================================
-function playClick(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.connect(g);g.connect(ctx.destination);
-    o.frequency.value=900;o.type='sine';
-    g.gain.setValueAtTime(0.25,ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.08);
-    o.start(ctx.currentTime);o.stop(ctx.currentTime+0.08);
-  }catch(e){}
-}
-
-function playMove(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const o=ctx.createOscillator(),g=ctx.createGain();
-    o.connect(g);g.connect(ctx.destination);
-    o.frequency.value=520;o.type='triangle';
-    g.gain.setValueAtTime(0.2,ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.2);
-    o.start(ctx.currentTime);o.stop(ctx.currentTime+0.2);
-  }catch(e){}
-}
-
-function playMill(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    [523,659,784].forEach((f,i)=>{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=f;o.type='sine';
-      g.gain.setValueAtTime(0,ctx.currentTime+i*0.12);
-      g.gain.linearRampToValueAtTime(0.3,ctx.currentTime+i*0.12+0.05);
-      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.12+0.35);
-      o.start(ctx.currentTime+i*0.12);o.stop(ctx.currentTime+i*0.12+0.35);
-    });
-  }catch(e){}
-}
-
-function playWin(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    [523,659,784,1047].forEach((f,i)=>{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=f;o.type='sine';
-      g.gain.setValueAtTime(0,ctx.currentTime+i*0.15);
-      g.gain.linearRampToValueAtTime(0.35,ctx.currentTime+i*0.15+0.05);
-      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.15+0.45);
-      o.start(ctx.currentTime+i*0.15);o.stop(ctx.currentTime+i*0.15+0.45);
-    });
-  }catch(e){}
-}
-
-function playLose(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    [400,350,300,250].forEach((f,i)=>{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=f;o.type='sawtooth';
-      g.gain.setValueAtTime(0,ctx.currentTime+i*0.2);
-      g.gain.linearRampToValueAtTime(0.2,ctx.currentTime+i*0.2+0.05);
-      g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+i*0.2+0.4);
-      o.start(ctx.currentTime+i*0.2);o.stop(ctx.currentTime+i*0.2+0.4);
-    });
-  }catch(e){}
-}
-
-let bgAudioCtx=null,bgGain=null,bgOsc=null;
-function startBgMusic(){
-  try{
-    bgAudioCtx=new(window.AudioContext||window.webkitAudioContext)();
-    bgGain=bgAudioCtx.createGain();
-    bgGain.gain.value=0.06;
-    bgGain.connect(bgAudioCtx.destination);
-    // Ambient pad
-    const notes=[220,277,330,370,440];
-    notes.forEach((freq,i)=>{
-      const osc=bgAudioCtx.createOscillator();
-      const g=bgAudioCtx.createGain();
-      osc.connect(g);g.connect(bgGain);
-      osc.type='sine';
-      osc.frequency.value=freq;
-      g.gain.value=0.15/(i+1);
-      osc.start();
-    });
-    musicPlaying=true;
-    document.getElementById('musicBtn').textContent='🎵';
-  }catch(e){}
-}
-
-function stopBgMusic(){
-  try{if(bgAudioCtx)bgAudioCtx.close();bgAudioCtx=null;musicPlaying=false;}catch(e){}
-}
-
-function toggleMusic(){
-  playClick();
-  if(musicPlaying){stopBgMusic();document.getElementById('musicBtn').textContent='🔇';}
-  else{startBgMusic();document.getElementById('musicBtn').textContent='🎵';}
-}
-
-// ============================================================
-// AUTH
-// ============================================================
-function switchAuth(mode){
-  playClick();
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>{
-    t.classList.toggle('active',(mode==='login'&&i===0)||(mode==='signup'&&i===1));
-  });
-  document.getElementById('loginForm').style.display=mode==='login'?'block':'none';
-  document.getElementById('signupForm').style.display=mode==='signup'?'block':'none';
-}
-
-function handleLogin(){
-  playClick();
-  const email=document.getElementById('loginEmail').value.trim();
-  const password=document.getElementById('loginPassword').value;
-  const errEl=document.getElementById('loginError');
-  if(!email||!password){errEl.textContent='Please fill in all fields.';errEl.style.display='block';return;}
-  const user=users[email];
-  if(!user||user.password!==password){errEl.textContent='Invalid email or password.';errEl.style.display='block';return;}
-  errEl.style.display='none';
-  currentUser={...user,email};
-  totalGames=user.games||0;
-  totalWinnings=user.winnings||0;
-  enterGame();
-}
-
-function handleSignup(){
-  playClick();
-  const name=document.getElementById('signupName').value.trim();
-  const email=document.getElementById('signupEmail').value.trim();
-  const password=document.getElementById('signupPassword').value;
-  const errEl=document.getElementById('signupError');
-  const successEl=document.getElementById('signupSuccess');
-  errEl.style.display='none';successEl.style.display='none';
-  if(!name){errEl.textContent='Please enter your full name.';errEl.style.display='block';return;}
-  if(!email||!email.includes('@')){errEl.textContent='Please enter a valid email.';errEl.style.display='block';return;}
-  if(password.length<8){errEl.textContent='Password must be at least 8 characters.';errEl.style.display='block';return;}
-  if(users[email]){errEl.textContent='An account with this email already exists.';errEl.style.display='block';return;}
-  const newUser={name,password,balance:100,games:0,winnings:0,referralCode:'NINE'+Math.floor(Math.random()*900+100)};
-  users[email]=newUser;
-  localStorage.setItem('nmm_users',JSON.stringify(users));
-  successEl.style.display='block';
-  currentUser={...newUser,email};
-  setTimeout(()=>{enterGame();showToast('🎉 Welcome Bonus: Rs 100 added!');},1500);
-}
-
-function enterGame(){
-  document.getElementById('authScreen').classList.remove('active');
-  document.getElementById('authScreen').style.display='none';
-  document.getElementById('gameScreen').classList.add('active');
-  document.getElementById('gameScreen').style.display='block';
-  updateUI();
-  initBoard();
-  drawSpinWheel();
-  setTimeout(()=>startBgMusic(),600);
-}
-
-function handleLogout(){
-  playClick();
-  saveUser();
-  currentUser=null;
-  document.getElementById('gameScreen').classList.remove('active');
-  document.getElementById('gameScreen').style.display='none';
-  document.getElementById('authScreen').classList.add('active');
-  document.getElementById('authScreen').style.display='flex';
-  document.getElementById('loginEmail').value='';
-  document.getElementById('loginPassword').value='';
-  document.getElementById('loginError').style.display='none';
-  stopTimer();stopBgMusic();resetGame();
-}
-
-function saveUser(){
-  if(!currentUser)return;
-  users[currentUser.email]={name:currentUser.name,password:currentUser.password,balance:currentUser.balance,games:totalGames,winnings:totalWinnings,referralCode:currentUser.referralCode};
-  localStorage.setItem('nmm_users',JSON.stringify(users));
-}
-
-// ============================================================
-// UI
-// ============================================================
-function updateUI(){
-  if(!currentUser)return;
-  const bal='Rs '+(currentUser.balance||0).toLocaleString();
-  document.getElementById('headerBalance').textContent=bal;
-  document.getElementById('profileBalance').textContent=bal;
-  document.getElementById('profileName').textContent=currentUser.name||'Player';
-  document.getElementById('profileEmail').textContent=currentUser.email||'';
-  document.getElementById('profileGames').textContent=totalGames;
-  document.getElementById('profileWinnings').textContent='Rs '+totalWinnings.toLocaleString();
-  document.getElementById('playerNameDisplay').textContent=(currentUser.name||'You').split(' ')[0];
-  document.getElementById('referralCode').textContent=currentUser.referralCode||'NINE789';
-  document.getElementById('statWins').textContent='Rs '+totalWinnings.toLocaleString();
-  document.getElementById('statGames').textContent=totalGames;
-  document.getElementById('statBet').textContent='Rs '+currentBet.toLocaleString();
-}
-
-function showToast(msg,duration=3000){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),duration);
-}
-
-// ============================================================
-// TABS
-// ============================================================
-function switchTab(name){
-  playClick();
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const tabEl=document.getElementById('tab-'+name);
-  if(tabEl)tabEl.classList.add('active');
-  const navEl=document.getElementById('nav-'+name);
-  if(navEl)navEl.classList.add('active');
-  const tabMap={game:0,offers:1,deposit:2,support:3,profile:4};
-  const tabs=document.querySelectorAll('.tab-btn');
-  if(tabMap[name]!==undefined)tabs[tabMap[name]].classList.add('active');
-}
-
-// ============================================================
-// BOARD
-// ============================================================
-function initBoard(){
-  board=new Array(24).fill(null);
-  drawBoard();
-}
-
-function drawBoard(){
-  const linesGroup=document.getElementById('boardLines');
-  const pointsGroup=document.getElementById('boardPoints');
-  linesGroup.innerHTML='';pointsGroup.innerHTML='';
-
-  const lineData=[
-    [0,1],[1,2],[2,14],[14,23],[23,22],[22,21],[21,9],[9,0],
-    [3,4],[4,5],[5,13],[13,20],[20,19],[19,18],[18,10],[10,3],
-    [6,7],[7,8],[8,12],[12,17],[17,16],[16,15],[15,11],[11,6],
-    [1,4],[4,7],[22,19],[19,16],[9,10],[10,11],[14,13],[13,12]
+  // ----- GAME CONSTANTS -----
+  const POINTS = [
+    {x:40,y:40},{x:240,y:40},{x:440,y:40},
+    {x:110,y:110},{x:240,y:110},{x:370,y:110},
+    {x:180,y:180},{x:240,y:180},{x:300,y:180},
+    {x:40,y:240},{x:110,y:240},{x:180,y:240},
+    {x:300,y:240},{x:370,y:240},{x:440,y:240},
+    {x:180,y:300},{x:240,y:300},{x:300,y:300},
+    {x:110,y:370},{x:240,y:370},{x:370,y:370},
+    {x:40,y:440},{x:240,y:440},{x:440,y:440}
+  ];
+  const ADJ = [
+    [1,9],[0,2,4],[1,14],[4,10],[3,5,1,7],[4,13],[7,11],[6,8,4],[7,12],
+    [0,10,21],[9,11,3,18],[10,6,15],[8,13,17],[12,14,5,20],[13,2,23],
+    [11,16,18],[15,17,19],[16,12,20],[10,19,3],[18,20,15,22],[19,13,17],
+    [9,22],[21,23,19],[22,14]
+  ];
+  const MILLS = [
+    [0,1,2],[3,4,5],[6,7,8],[9,10,11],[12,13,14],[15,16,17],[18,19,20],[21,22,23],
+    [0,9,21],[3,10,18],[6,11,15],[1,4,7],[16,19,22],[8,12,17],[5,13,20],[2,14,23]
   ];
 
-  lineData.forEach(([a,b])=>{
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',POSITIONS[a][0]);line.setAttribute('y1',POSITIONS[a][1]);
-    line.setAttribute('x2',POSITIONS[b][0]);line.setAttribute('y2',POSITIONS[b][1]);
-    line.setAttribute('class','board-line');
-    linesGroup.appendChild(line);
-  });
+  let board = new Array(24).fill(null);
+  let phase = 'placing'; // placing, moving
+  let turn = 'p'; // p=player, a=ai
+  let pPlaced = 0, aPlaced = 0;
+  let selectedIdx = null;
+  let gameActive = false;
+  let aiThinking = false;
+  let waitRemove = false, removeFor = null;
+  let currentBet = 0;
+  let aiDifficulty = 'hard';
+  let currentUser = null, userData = null;
+  let spinCooldown = 0, spinAngle = 0;
 
-  POSITIONS.forEach((pos,i)=>{
-    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('class','board-point');g.setAttribute('id','pos-'+i);
-    g.setAttribute('transform',`translate(${pos[0]},${pos[1]})`);
-    g.addEventListener('click',()=>handleBoardClick(i));
-    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    circle.setAttribute('class','point-bg');circle.setAttribute('cx','0');circle.setAttribute('cy','0');circle.setAttribute('r','13');
-    g.appendChild(circle);
-    pointsGroup.appendChild(g);
-  });
+  // helper
+  function showToast(msg) { let t=document.getElementById('toastMsg'); t.innerText=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);}
+  function saveUserData() { if(currentUser && userData) localStorage.setItem('nmm_users', JSON.stringify({[currentUser.email]: userData})); }
+  function loadAllUsers() { let raw = localStorage.getItem('nmm_users'); return raw ? JSON.parse(raw) : {}; }
 
-  renderPieces();
-}
-
-function renderPieces(){
-  document.querySelectorAll('.game-piece').forEach(p=>p.remove());
-  POSITIONS.forEach((pos,i)=>{
-    if(board[i]===null)return;
-    const svg=document.getElementById('gameBoardSVG');
-    const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-    g.setAttribute('class','game-piece');
-    g.setAttribute('transform',`translate(${pos[0]},${pos[1]})`);
-    // Shadow
-    const shadow=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-    shadow.setAttribute('cx','2');shadow.setAttribute('cy','3');shadow.setAttribute('rx','10');shadow.setAttribute('ry','5');
-    shadow.setAttribute('fill','rgba(0,0,0,0.3)');
-    g.appendChild(shadow);
-    // Piece
-    const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    circle.setAttribute('cx','0');circle.setAttribute('cy','0');circle.setAttribute('r','11');
-    circle.setAttribute('fill',board[i]==='user'?'url(#userGradient)':'url(#aiGradient)');
-    circle.setAttribute('stroke',board[i]==='user'?'#FFD700':'#ff6666');
-    circle.setAttribute('stroke-width','2');
-    circle.setAttribute('filter','url(#pieceShadow)');
-    if(i===selectedPos){
-      circle.setAttribute('stroke','#ffffff');circle.setAttribute('stroke-width','3');
-      g.style.animation='piecePulse 0.6s ease-in-out infinite alternate';
-    }
-    // Shine
-    const shine=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
-    shine.setAttribute('cx','-3');shine.setAttribute('cy','-4');shine.setAttribute('rx','4');shine.setAttribute('ry','3');
-    shine.setAttribute('fill','rgba(255,255,255,0.4)');
-    g.appendChild(circle);g.appendChild(shine);
-    svg.appendChild(g);
-  });
-
-  document.querySelectorAll('.board-point').forEach(g=>{g.classList.remove('valid-move','selected','mill-point');});
-  validMoves.forEach(m=>{const g=document.getElementById('pos-'+m);if(g)g.classList.add('valid-move');});
-  if(selectedPos>=0){const g=document.getElementById('pos-'+selectedPos);if(g)g.classList.add('selected');}
-}
-
-// ============================================================
-// CONNECT-START (with 5s countdown)
-// ============================================================
-function connectStart(){
-  playClick();
-  if(currentBet>0&&currentUser.balance<currentBet){showToast('❌ Insufficient balance! Please deposit first.');return;}
-
-  const overlay=document.getElementById('connectingOverlay');
-  const text=document.getElementById('connectingText');
-  const countdown=document.getElementById('connectingCountdown');
-
-  overlay.classList.add('active');
-  text.textContent='People Connecting...';
-  let count=5;
-  countdown.textContent=count;
-
-  const cInterval=setInterval(()=>{
-    count--;
-    countdown.textContent=count;
-    if(count<=0){
-      clearInterval(cInterval);
-      overlay.classList.remove('active');
-      actuallyStartGame();
-    }
-  },1000);
-}
-
-function actuallyStartGame(){
-  if(currentBet>0){currentUser.balance-=currentBet;updateUI();}
-  board=new Array(24).fill(null);
-  phase='placing';turn='user';
-  userPieces=9;aiPieces=9;userOnBoard=0;aiOnBoard=0;
-  selectedPos=-1;validMoves=[];
-  gameActive=true;removingPiece=false;
-  aiChance=70;userChance=30;
-  totalGames++;
-  updateChanceBar();
-  renderPieces();
-  updatePieceCounters();
-  updateGameStatus();
-  startTimer();
-  document.getElementById('userCard').classList.add('active-player');
-  document.getElementById('aiCard').classList.remove('active-player');
-  showToast('🎮 Game Started! Place your pieces.');
-  updateUI();
-}
-
-function resetGame(){
-  playClick();
-  stopTimer();gameActive=false;
-  board=new Array(24).fill(null);phase='placing';turn='user';
-  userPieces=9;aiPieces=9;userOnBoard=0;aiOnBoard=0;
-  selectedPos=-1;validMoves=[];removingPiece=false;
-  renderPieces();updatePieceCounters();
-  document.getElementById('gameStatus').textContent='Select bet and press CONNECT START';
-  document.getElementById('timerDisplay').textContent='20s';
-  resetTimerRing();
-}
-
-// ============================================================
-// BOARD CLICK
-// ============================================================
-function handleBoardClick(pos){
-  if(!gameActive||turn!=='user')return;
-  playClick();
-
-  if(removingPiece){
-    if(board[pos]==='ai'){removeOpponentPiece(pos,'ai');}
-    else showToast('❗ Select an AI piece to remove!');
-    return;
+  // ---------- AUTH ----------
+  function updateUIafterLogin() {
+    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    document.getElementById('mainBalance').innerText = userData.balance;
+    document.getElementById('profileBalance').innerText = userData.balance;
+    document.getElementById('profileWins').innerText = userData.totalWinnings;
+    document.getElementById('profileGames').innerText = userData.gamesPlayed;
+    document.getElementById('statWins').innerText = userData.totalWinnings;
+    document.getElementById('statGames').innerText = userData.gamesPlayed;
+    let letter = (currentUser.name[0] || 'U').toUpperCase();
+    document.getElementById('avatarLetter').innerText = letter;
+    document.getElementById('profileAvatar').innerText = letter;
+    document.getElementById('profileName').innerText = currentUser.name;
+    document.getElementById('profileEmail').innerText = currentUser.email;
+    resetGameState();
+    renderBetChips();
   }
 
-  if(phase==='placing'){
-    if(board[pos]!==null){showToast('❗ Position already occupied!');return;}
-    placeUserPiece(pos);
-  } else {
-    if(selectedPos===-1){
-      if(board[pos]==='user'){selectedPos=pos;validMoves=getValidMoves(pos,'user');renderPieces();}
-      else showToast('❗ Select your own piece!');
-    } else {
-      if(pos===selectedPos){selectedPos=-1;validMoves=[];renderPieces();return;}
-      if(validMoves.includes(pos)){
-        // Smooth move animation
-        animatePieceMove(selectedPos,pos,'user',()=>{
-          board[selectedPos]=null;board[pos]='user';
-          const formedMill=checkMill(pos,'user');
-          selectedPos=-1;validMoves=[];renderPieces();
-          if(formedMill){playMill();highlightMill(pos,'user');removingPiece=true;updateGameStatus('🎉 MILL! Remove an AI piece!');updateChanceOnEvent('user_mill');}
-          else{resetTimer();switchTurn('ai');}
-        });
-      } else {
-        if(board[pos]==='user'){selectedPos=pos;validMoves=getValidMoves(pos,'user');renderPieces();}
-        else showToast('❗ Invalid move!');
-      }
-    }
-  }
-}
-
-// Smooth piece move animation
-function animatePieceMove(from,to,player,callback){
-  playMove();
-  const fromPos=POSITIONS[from];
-  const toPos=POSITIONS[to];
-  const svg=document.getElementById('gameBoardSVG');
-
-  const animPiece=document.createElementNS('http://www.w3.org/2000/svg','circle');
-  animPiece.setAttribute('cx',fromPos[0]);animPiece.setAttribute('cy',fromPos[1]);animPiece.setAttribute('r','11');
-  animPiece.setAttribute('fill',player==='user'?'url(#userGradient)':'url(#aiGradient)');
-  animPiece.setAttribute('stroke',player==='user'?'#FFD700':'#ff6666');
-  animPiece.setAttribute('stroke-width','2');
-  animPiece.setAttribute('opacity','0.9');
-  svg.appendChild(animPiece);
-
-  const duration=350;
-  const startTime=performance.now();
-  const dx=toPos[0]-fromPos[0];
-  const dy=toPos[1]-fromPos[1];
-
-  function step(now){
-    const t=Math.min((now-startTime)/duration,1);
-    const ease=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2; // ease in-out
-    animPiece.setAttribute('cx',fromPos[0]+dx*ease);
-    animPiece.setAttribute('cy',fromPos[1]+dy*ease);
-    if(t<1){requestAnimationFrame(step);}
-    else{animPiece.remove();callback();}
-  }
-  requestAnimationFrame(step);
-}
-
-function placeUserPiece(pos){
-  board[pos]='user';userPieces--;userOnBoard++;
-  playMove();renderPieces();updatePieceCounters();
-  const formedMill=checkMill(pos,'user');
-  if(formedMill){playMill();highlightMill(pos,'user');removingPiece=true;updateGameStatus('🎉 MILL! Remove an AI piece!');updateChanceOnEvent('user_mill');}
-  else{resetTimer();switchTurn('ai');}
-}
-
-function removeOpponentPiece(pos,opponent){
-  board[pos]=null;
-  if(opponent==='ai'){aiOnBoard--;updateChanceOnEvent('user_remove');}
-  else{userOnBoard--;updateChanceOnEvent('ai_remove');}
-  removingPiece=false;renderPieces();updatePieceCounters();
-  if(checkWin())return;
-  resetTimer();
-  if(opponent==='ai')switchTurn('ai');else switchTurn('user');
-}
-
-function switchTurn(who){
-  turn=who;
-  if(who==='user'){
-    if(userPieces===0)phase=userOnBoard<=3?'flying':'moving';
-    document.getElementById('userCard').classList.add('active-player');
-    document.getElementById('aiCard').classList.remove('active-player');
-    updateGameStatus();resetTimer();
-  } else {
-    if(aiPieces===0)phase=aiOnBoard<=3?'flying':'moving';
-    document.getElementById('aiCard').classList.add('active-player');
-    document.getElementById('userCard').classList.remove('active-player');
-    updateGameStatus('🤖 AI is thinking...');stopTimer();
-    setTimeout(()=>{if(gameActive)aiMove();},700+Math.random()*500);
-  }
-}
-
-// ============================================================
-// ADVANCED AI — Minimax + Alpha-Beta
-// ============================================================
-function aiMove(){
-  if(!gameActive)return;
-  if(aiPieces>0){
-    const pos=aiBestPlace();
-    board[pos]='ai';aiPieces--;aiOnBoard++;
-    playMove();renderPieces();updatePieceCounters();
-    const formedMill=checkMill(pos,'ai');
-    if(formedMill){playMill();highlightMill(pos,'ai');updateChanceOnEvent('ai_mill');
-      setTimeout(()=>{const r=aiBestRemove();if(r!==-1)removeOpponentPiece(r,'user');else{resetTimer();switchTurn('user');}},600);}
-    else{if(checkWin())return;resetTimer();switchTurn('user');}
-  } else {
-    const move=aiBestMove();
-    if(!move){endGame('user');return;}
-    animatePieceMove(move.from,move.to,'ai',()=>{
-      board[move.from]=null;board[move.to]='ai';renderPieces();
-      const formedMill=checkMill(move.to,'ai');
-      if(formedMill){playMill();highlightMill(move.to,'ai');updateChanceOnEvent('ai_mill');
-        setTimeout(()=>{const r=aiBestRemove();if(r!==-1)removeOpponentPiece(r,'user');else{resetTimer();switchTurn('user');}},600);}
-      else{if(checkWin())return;resetTimer();switchTurn('user');}
-    });
-  }
-}
-
-function aiBestPlace(){
-  // Form mill
-  for(let i=0;i<24;i++){if(board[i]!==null)continue;board[i]='ai';if(checkMill(i,'ai')){board[i]=null;return i;}board[i]=null;}
-  // Block user mill
-  for(let i=0;i<24;i++){if(board[i]!==null)continue;board[i]='user';if(checkMill(i,'user')){board[i]=null;return i;}board[i]=null;}
-  // Double mill setup
-  for(let i=0;i<24;i++){if(board[i]!==null)continue;board[i]='ai';const p=countPotentialMills(i,'ai');board[i]=null;if(p>=2)return i;}
-  // Strategic
-  const strategic=[4,10,13,19,1,9,14,22,7,16,0,2,21,23];
-  for(const pos of strategic){if(board[pos]===null)return pos;}
-  for(let i=0;i<24;i++){if(board[i]===null)return i;}
-  return 0;
-}
-
-function countPotentialMills(pos,player){
-  let count=0;
-  for(const mill of MILLS){
-    if(!mill.includes(pos))continue;
-    const others=mill.filter(p=>p!==pos);
-    if(others.every(p=>board[p]===player||board[p]===null))count++;
-  }
-  return count;
-}
-
-function aiBestMove(){
-  const aiFlying=aiOnBoard<=3&&aiPieces===0;
-  const moves=getAllMoves('ai',aiFlying);
-  if(moves.length===0)return null;
-  let bestScore=-Infinity,bestMove=null;
-  for(const move of moves){
-    board[move.from]=null;board[move.to]='ai';
-    const score=minimax(4,false,-Infinity,Infinity);
-    board[move.from]='ai';board[move.to]=null;
-    if(score>bestScore){bestScore=score;bestMove=move;}
-  }
-  return bestMove;
-}
-
-function minimax(depth,isMax,alpha,beta){
-  const winner=getWinner();
-  if(winner==='ai')return 1000+depth;
-  if(winner==='user')return-1000-depth;
-  if(depth===0)return evaluateBoard();
-  const aiFlying=aiOnBoard<=3&&aiPieces===0;
-  const userFlying=userOnBoard<=3&&userPieces===0;
-  if(isMax){
-    let maxScore=-Infinity;
-    const moves=getAllMoves('ai',aiFlying);
-    if(moves.length===0)return-1000;
-    for(const move of moves){
-      board[move.from]=null;board[move.to]='ai';
-      const score=minimax(depth-1,false,alpha,beta);
-      board[move.from]='ai';board[move.to]=null;
-      maxScore=Math.max(maxScore,score);alpha=Math.max(alpha,score);
-      if(beta<=alpha)break;
-    }
-    return maxScore;
-  } else {
-    let minScore=Infinity;
-    const moves=getAllMoves('user',userFlying);
-    if(moves.length===0)return 1000;
-    for(const move of moves){
-      board[move.from]=null;board[move.to]='user';
-      const score=minimax(depth-1,true,alpha,beta);
-      board[move.from]='user';board[move.to]=null;
-      minScore=Math.min(minScore,score);beta=Math.min(beta,score);
-      if(beta<=alpha)break;
-    }
-    return minScore;
-  }
-}
-
-function evaluateBoard(){
-  let score=0;
-  const aiCount=board.filter(p=>p==='ai').length;
-  const userCount=board.filter(p=>p==='user').length;
-  score+=(aiCount-userCount)*10;
-  for(const mill of MILLS){
-    const ai=mill.filter(p=>board[p]==='ai').length;
-    const us=mill.filter(p=>board[p]==='user').length;
-    if(us===0)score+=ai*3;if(ai===0)score-=us*3;
-    if(ai===3)score+=50;if(us===3)score-=50;
-  }
-  return score;
-}
-
-function getAllMoves(player,flying){
-  const moves=[];
-  for(let from=0;from<24;from++){
-    if(board[from]!==player)continue;
-    if(flying){for(let to=0;to<24;to++){if(board[to]===null)moves.push({from,to});}}
-    else{for(const to of ADJACENT[from]){if(board[to]===null)moves.push({from,to});}}
-  }
-  return moves;
-}
-
-function getValidMoves(pos,player){
-  const flying=(player==='user'&&userOnBoard<=3&&userPieces===0)||(player==='ai'&&aiOnBoard<=3&&aiPieces===0);
-  if(flying)return Array.from({length:24},(_,i)=>i).filter(i=>board[i]===null);
-  return ADJACENT[pos].filter(p=>board[p]===null);
-}
-
-function aiBestRemove(){
-  const nonMill=[],inMill=[];
-  for(let i=0;i<24;i++){
-    if(board[i]!=='user')continue;
-    if(isInMill(i,'user'))inMill.push(i);else nonMill.push(i);
-  }
-  const cands=nonMill.length>0?nonMill:inMill;
-  if(cands.length===0)return-1;
-  let best=-1,bestPos=cands[0];
-  for(const pos of cands){const s=countPotentialMills(pos,'user');if(s>best){best=s;bestPos=pos;}}
-  return bestPos;
-}
-
-function checkMill(pos,player){
-  return MILLS.some(mill=>mill.includes(pos)&&mill.every(p=>board[p]===player));
-}
-
-function isInMill(pos,player){
-  return MILLS.some(mill=>mill.includes(pos)&&mill.every(p=>board[p]===player));
-}
-
-function highlightMill(pos,player){
-  for(const mill of MILLS){
-    if(mill.includes(pos)&&mill.every(p=>board[p]===player)){
-      mill.forEach(p=>{const g=document.getElementById('pos-'+p);if(g){g.classList.add('mill-point');setTimeout(()=>g.classList.remove('mill-point'),2000);}});
-      break;
-    }
-  }
-}
-
-function getWinner(){
-  const aiTotal=aiOnBoard+aiPieces;
-  const userTotal=userOnBoard+userPieces;
-  if(aiTotal<=2&&aiPieces===0)return'user';
-  if(userTotal<=2&&userPieces===0)return'ai';
-  if(aiPieces===0&&getAllMoves('ai',aiOnBoard<=3).length===0)return'user';
-  if(userPieces===0&&getAllMoves('user',userOnBoard<=3).length===0)return'ai';
-  return null;
-}
-
-function checkWin(){
-  const winner=getWinner();
-  if(winner){setTimeout(()=>endGame(winner),300);return true;}
-  return false;
-}
-
-function endGame(winner){
-  gameActive=false;stopTimer();
-  const isWin=winner==='user';
-  let prize=0;
-  if(isWin){prize=Math.floor(currentBet*2*0.95);currentUser.balance+=prize;totalWinnings+=prize;playWin();launchConfetti();}
-  else playLose();
-  updateUI();updateTxHistory(isWin?`+Rs ${prize}`:`-Rs ${currentBet}`,isWin);
-  if(isWin){aiChance=Math.min(90,aiChance+5);userChance=Math.max(10,userChance-5);}
-  else{aiChance=Math.max(50,aiChance-3);userChance=Math.min(50,userChance+3);}
-  updateChanceBar();
-  document.getElementById('gameoverEmoji').textContent=isWin?'🏆':'😢';
-  document.getElementById('gameoverTitle').textContent=isWin?'YOU WIN!':'AI WINS!';
-  document.getElementById('gameoverTitle').className='gameover-title '+(isWin?'win':'lose');
-  document.getElementById('gameoverDesc').textContent=isWin?'Amazing! You defeated the AI!':'The AI was stronger. Try again!';
-  document.getElementById('gameoverAmount').textContent=isWin?'+Rs '+prize.toLocaleString():'-Rs '+currentBet.toLocaleString();
-  document.getElementById('gameoverAmount').className='gameover-amount '+(isWin?'positive':'negative');
-  document.getElementById('gameoverModal').classList.add('active');
-}
-
-function playAgain(){playClick();document.getElementById('gameoverModal').classList.remove('active');connectStart();}
-function closeGameover(){playClick();document.getElementById('gameoverModal').classList.remove('active');resetGame();}
-
-// ============================================================
-// TIMER — properly starts when game starts
-// ============================================================
-function startTimer(){
-  stopTimer();timerValue=20;updateTimerDisplay();
-  timerInterval=setInterval(()=>{
-    timerValue--;updateTimerDisplay();
-    if(timerValue<=0){stopTimer();if(gameActive){showToast('⏰ Time Up! You lose!');endGame('ai');}}
-  },1000);
-}
-
-function resetTimer(){timerValue=20;updateTimerDisplay();}
-function stopTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
-
-function updateTimerDisplay(){
-  const el=document.getElementById('timerDisplay');
-  const circle=document.getElementById('timerCircle');
-  const ring=document.getElementById('timerRing');
-  el.textContent=timerValue+'s';
-  const circumference=2*Math.PI*32;
-  const offset=circumference*(1-timerValue/20);
-  ring.style.strokeDashoffset=offset;
-  ring.style.strokeDasharray=circumference;
-  if(timerValue<=5){circle.classList.add('urgent');ring.style.stroke='#ff4444';}
-  else{circle.classList.remove('urgent');ring.style.stroke='#FFD700';}
-}
-
-function resetTimerRing(){
-  const ring=document.getElementById('timerRing');
-  const circumference=2*Math.PI*32;
-  ring.style.strokeDashoffset=0;ring.style.strokeDasharray=circumference;
-  document.getElementById('timerCircle').classList.remove('urgent');
-  ring.style.stroke='#FFD700';
-}
-
-// ============================================================
-// CHANCE BAR — leader bar is wider/in front
-// ============================================================
-function updateChanceBar(){
-  document.getElementById('aiChancePct').textContent=aiChance;
-  document.getElementById('userChancePct').textContent=userChance;
-  const aiBar=document.getElementById('chanceBarAI');
-  const userBar=document.getElementById('chanceBarUser');
-  aiBar.style.width=aiChance+'%';
-  userBar.style.width=userChance+'%';
-  // Leader gets z-index advantage (shows in front)
-  if(aiChance>userChance){aiBar.style.zIndex=2;userBar.style.zIndex=1;}
-  else{userBar.style.zIndex=2;aiBar.style.zIndex=1;}
-}
-
-function updateChanceOnEvent(event){
-  if(event==='user_mill'||event==='user_remove'){userChance=Math.min(70,userChance+4);aiChance=Math.max(30,aiChance-4);}
-  else{aiChance=Math.min(90,aiChance+4);userChance=Math.max(10,userChance-4);}
-  updateChanceBar();
-}
-
-// ============================================================
-// GAME STATUS & COUNTERS
-// ============================================================
-function updateGameStatus(msg){
-  if(msg){document.getElementById('gameStatus').textContent=msg;return;}
-  let s='';
-  if(!gameActive)s='Select bet and press CONNECT START';
-  else if(removingPiece)s=turn==='user'?'🎉 MILL! Remove an AI piece!':'🤖 AI removing your piece...';
-  else if(phase==='placing')s=turn==='user'?`♟️ PLACING — Your Turn (${userPieces} left)`:'🤖 PLACING — AI thinking...';
-  else if(phase==='moving')s=turn==='user'?'♟️ MOVING — Select & move your piece':'🤖 MOVING — AI thinking...';
-  else if(phase==='flying')s=turn==='user'?'✈️ FLYING — Move anywhere!':'✈️ FLYING — AI thinking...';
-  document.getElementById('gameStatus').textContent=s;
-}
-
-function updatePieceCounters(){
-  document.getElementById('userPiecesLeft').textContent=userPieces;
-  document.getElementById('aiPiecesLeft').textContent=aiPieces;
-}
-
-// ============================================================
-// CONFETTI
-// ============================================================
-function launchConfetti(){
-  const container=document.getElementById('confettiContainer');
-  const colors=['#FFD700','#00ff88','#ff4444','#4488ff','#ff88ff','#88ffff'];
-  for(let i=0;i<70;i++){
-    const piece=document.createElement('div');
-    piece.className='confetti-piece';
-    piece.style.left=Math.random()*100+'vw';
-    piece.style.background=colors[Math.floor(Math.random()*colors.length)];
-    piece.style.width=(Math.random()*10+5)+'px';
-    piece.style.height=(Math.random()*10+5)+'px';
-    piece.style.borderRadius=Math.random()>0.5?'50%':'0';
-    piece.style.animationDuration=(Math.random()*2+2)+'s';
-    piece.style.animationDelay=Math.random()*1+'s';
-    container.appendChild(piece);
-    setTimeout(()=>piece.remove(),4000);
-  }
-}
-
-// ============================================================
-// SPIN WHEEL — Canvas with prize labels, stops at 0
-// ============================================================
-function drawSpinWheel(rotation=0){
-  const canvas=document.getElementById('spinCanvas');
-  if(!canvas)return;
-  const ctx=canvas.getContext('2d');
-  const cx=90,cy=90,r=86;
-  const segments=SPIN_PRIZES.length;
-  const arc=2*Math.PI/segments;
-  ctx.clearRect(0,0,180,180);
-  SPIN_PRIZES.forEach((prize,i)=>{
-    const angle=rotation+i*arc;
-    ctx.beginPath();ctx.moveTo(cx,cy);
-    ctx.arc(cx,cy,r,angle,angle+arc);
-    ctx.closePath();
-    ctx.fillStyle=SPIN_COLORS[i];ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=1;ctx.stroke();
-    // Prize label
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(angle+arc/2);
-    ctx.textAlign='right';ctx.fillStyle='#fff';
-    ctx.font='bold 11px Orbitron,monospace';
-    ctx.shadowColor='rgba(0,0,0,0.5)';ctx.shadowBlur=3;
-    ctx.fillText('Rs '+prize.toLocaleString(),r-8,4);
-    ctx.restore();
-  });
-  // Center circle
-  ctx.beginPath();ctx.arc(cx,cy,18,0,2*Math.PI);
-  ctx.fillStyle='#051a0d';ctx.fill();
-  ctx.strokeStyle='#FFD700';ctx.lineWidth=3;ctx.stroke();
-  ctx.fillStyle='#FFD700';ctx.font='bold 10px Orbitron,monospace';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText('SPIN',cx,cy);
-}
-
-function spinWheel(){
-  playClick();
-  if(spinUsed){showToast('⏰ Come back in 12 hours!');return;}
-  const btn=document.getElementById('spinBtn');
-  btn.disabled=true;
-  // Pick a prize — stop at 0 (top = position 0 = first prize slot)
-  const prizeIndex=Math.floor(Math.random()*SPIN_PRIZES.length);
-  const arc=2*Math.PI/SPIN_PRIZES.length;
-  // Calculate rotation to land on prize, stopping near 0 (top)
-  const targetAngle=-(prizeIndex*arc)-arc/2; // offset to point top at prize
-  const totalRotation=Math.PI*8+targetAngle; // 4 full spins + target
-  const duration=3000;
-  const startTime=performance.now();
-  const startRot=spinRotation;
-
-  function animate(now){
-    const t=Math.min((now-startTime)/duration,1);
-    const ease=1-Math.pow(1-t,4);
-    spinRotation=startRot+totalRotation*ease;
-    drawSpinWheel(spinRotation);
-    if(t<1)requestAnimationFrame(animate);
-    else{
-      const prize=SPIN_PRIZES[prizeIndex];
-      currentUser.balance+=prize;updateUI();
-      updateTxHistory('+Rs '+prize+' (Lucky Spin)',true);
-      showToast('🎡 You won Rs '+prize.toLocaleString()+'!');
-      spinUsed=true;btn.textContent='⏰ Next spin in 12h';
-    }
-  }
-  requestAnimationFrame(animate);
-}
-
-// ============================================================
-// PAYMENT
-// ============================================================
-function selectBet(el,amount){
-  playClick();
-  currentBet=amount;
-  document.querySelectorAll('.bet-chip').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-  document.getElementById('statBet').textContent='Rs '+amount.toLocaleString();
-  updateUI();
-}
-
-function selectPayment(method){
-  playClick();
-  selectedPayment=method;
-  document.querySelectorAll('.pay-logo-real').forEach(l=>l.classList.remove('selected'));
-  event.currentTarget.classList.add('selected');
-}
-
-function selectDepMethod(method){
-  playClick();
-  selectedDepMethodVar=method;
-  document.querySelectorAll('#tab-deposit .pay-logo-real').forEach(l=>l.classList.remove('selected'));
-  document.getElementById('dep-'+method).classList.add('selected');
-}
-
-function selectDepAmount(el,amount){
-  playClick();
-  document.getElementById('depAmount').value=amount;
-  document.querySelectorAll('.amount-chip').forEach(c=>c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-function processDeposit(){
-  playClick();
-  const amount=parseInt(document.getElementById('depAmount').value);
-  if(!amount||amount<200){showToast('❌ Minimum deposit is Rs 200');return;}
-  currentUser.balance+=amount;
-  let bonus=0;
-  if(amount>=1000)bonus=Math.floor(Math.random()*900+100);
-  else if(amount>=500)bonus=Math.floor(Math.random()*770+7);
-  else if(amount>=200)bonus=Math.floor(Math.random()*170+30);
-  if(bonus>0){currentUser.balance+=bonus;showToast('✅ Rs '+amount.toLocaleString()+' + Bonus Rs '+bonus+'!');}
-  else showToast('✅ Rs '+amount.toLocaleString()+' deposited!');
-  updateUI();updateTxHistory('+Rs '+amount.toLocaleString(),true);
-  document.getElementById('depAmount').value='';
-}
-
-function updateTxHistory(text,positive){
-  transactions.unshift({text,positive,time:new Date().toLocaleTimeString()});
-  const html=transactions.slice(0,10).map(tx=>`<div class="tx-item"><div class="tx-type">${tx.positive?'💰':'💸'} ${tx.time}</div><div class="tx-amount ${tx.positive?'positive':'negative'}">${tx.text}</div></div>`).join('');
-  document.getElementById('txList').innerHTML=html||'<div class="tx-empty">No transactions yet</div>';
-  document.getElementById('txList2').innerHTML=html||'<div class="tx-empty">No transactions yet</div>';
-}
-
-// ============================================================
-// WITHDRAW
-// ============================================================
-function showWithdraw(){playClick();document.getElementById('withdrawModal').classList.add('active');}
-function closeWithdraw(){document.getElementById('withdrawModal').classList.remove('active');}
-function selectWMethod(el,method){selectedWMethodVar=method;document.querySelectorAll('.w-method-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
-function submitWithdraw(){
-  playClick();
-  const account=document.getElementById('wAccountNo').value.trim();
-  const amount=parseInt(document.getElementById('wAmount').value);
-  if(!account){showToast('❌ Please enter account number');return;}
-  if(!amount||amount<100){showToast('❌ Minimum withdrawal is Rs 100');return;}
-  if(amount>(currentUser.balance||0)){showToast('❌ Insufficient balance');return;}
-  currentUser.balance-=amount;updateUI();
-  updateTxHistory('-Rs '+amount.toLocaleString(),false);
-  closeWithdraw();showToast('✅ Withdraw sent! Rs '+amount.toLocaleString()+' via '+selectedWMethodVar);
-  document.getElementById('wAccountNo').value='';document.getElementById('wAmount').value='';
-}
-
-// ============================================================
-// SUPPORT / CHAT
-// ============================================================
-const aiResponses=[
-  "Hello! Welcome to Nine Men's Morris! 👋 How can I help you today?",
-  "Nine Men's Morris: Place 9 pieces, form mills (3 in a row) to remove opponent's pieces. Win by reducing them to 2 pieces! 🎮",
-  "To deposit: Go to Deposit tab, choose JazzCash or EasyPaisa, enter amount and tap Deposit Now. Minimum Rs 200. 💰",
-  "To withdraw: Tap 💸 icon or Deposit tab → Withdraw. Processed in 24h via WhatsApp: 03299240169 📱",
-  "A mill is 3 of your pieces in a straight line on the board. When formed, you remove one opponent piece! ♟️",
-  "Flying mode: when you have only 3 pieces left, you can move to any empty spot on the board! ✈️",
-  "Contact us: WhatsApp 03299240169 or Email: mrbanujunior@gmail.com — Available 24/7! 📧",
-];
-
-const onlineResponses=[
-  "Welcome to Nine Men's Morris Live Support! How may we assist you today? 🙏",
-  "I understand. Our team is here to help. Please describe your issue in detail.",
-  "For payment issues, provide your transaction ID and we'll resolve within 2-4 hours.",
-  "Your account is secure with industry-standard encryption.",
-  "For fastest support, WhatsApp us at 03299240169 — we reply within minutes!",
-  "Is there anything else I can help you with? We're available 24/7!",
-  "Thank you for contacting Nine Men's Morris support! Have a great day! 🌟",
-];
-
-function openChatModal(){
-  playClick();
-  document.getElementById('chatModal').classList.add('active');
-  if(document.getElementById('chatMessages').children.length===0){
-    addChatMsg('ai',aiResponses[0]);chatReplies=7;
-    document.getElementById('repliesLeft').textContent=chatReplies;
-  }
-}
-
-function closeChatModal(){document.getElementById('chatModal').classList.remove('active');}
-
-function addChatMsg(type,text,isImage=false){
-  const container=document.getElementById('chatMessages');
-  const msg=document.createElement('div');msg.className='chat-msg '+type;
-  if(isImage)msg.innerHTML=`<img src="${text}" class="gallery-preview" alt="Image"><div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
-  else msg.innerHTML=`${text}<div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
-  container.appendChild(msg);container.scrollTop=container.scrollHeight;
-}
-
-function sendChat(){
-  const input=document.getElementById('chatInput');
-  const text=input.value.trim();if(!text)return;
-  if(chatReplies<=0){showToast('❌ No replies left. Contact WhatsApp: 03299240169');return;}
-  playClick();addChatMsg('user',text);input.value='';
-  chatReplies--;document.getElementById('repliesLeft').textContent=chatReplies;
-  const container=document.getElementById('chatMessages');
-  const typing=document.createElement('div');typing.className='chat-msg ai';
-  typing.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  typing.id='typingIndicator';container.appendChild(typing);container.scrollTop=container.scrollHeight;
-  setTimeout(()=>{
-    const ti=document.getElementById('typingIndicator');if(ti)ti.remove();
-    const lower=text.toLowerCase();
-    let r;
-    if(lower.includes('deposit')||lower.includes('paisa')||lower.includes('money'))r=aiResponses[2];
-    else if(lower.includes('withdraw')||lower.includes('cashout'))r=aiResponses[3];
-    else if(lower.includes('mill')||lower.includes('3 in'))r=aiResponses[4];
-    else if(lower.includes('fly'))r=aiResponses[5];
-    else if(lower.includes('contact')||lower.includes('email')||lower.includes('whatsapp'))r=aiResponses[6];
-    else if(lower.includes('how')||lower.includes('rule')||lower.includes('game'))r=aiResponses[1];
-    else r="I'm here to help! Ask me about game rules, deposits, withdrawals, or anything else. 😊 Contact: 03299240169";
-    addChatMsg('ai',r);
-  },1200);
-}
-
-function handleGalleryImage(event){
-  const file=event.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=(e)=>{addChatMsg('user',e.target.result,true);setTimeout(()=>addChatMsg('ai',"Thanks for the image! 📸 Our team will review it. WhatsApp us at 03299240169 for faster help."),1000);};
-  reader.readAsDataURL(file);
-}
-
-function openOnlineService(){
-  playClick();
-  document.getElementById('onlineServiceModal').classList.add('active');
-  document.getElementById('nameFormSection').style.display='block';
-  document.getElementById('onlineChatSection').style.display='none';
-}
-
-function closeOnlineService(){document.getElementById('onlineServiceModal').classList.remove('active');}
-
-function startOnlineChat(){
-  playClick();
-  const name=document.getElementById('visitorName').value.trim();
-  if(!name){showToast('❗ Please enter your name');return;}
-  document.getElementById('nameFormSection').style.display='none';
-  const chatSection=document.getElementById('onlineChatSection');
-  chatSection.style.display='flex';chatSection.style.flexDirection='column';
-  onlineReplies=7;document.getElementById('onlineRepliesLeft').textContent=onlineReplies;
-  const container=document.getElementById('onlineChatMessages');container.innerHTML='';
-  const welcome=document.createElement('div');welcome.className='chat-msg ai';
-  welcome.innerHTML=`🎉 Welcome to <strong>Nine Men's Morris</strong>, <strong>${name}</strong>! 👋<br><br>${onlineResponses[0]}<div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
-  container.appendChild(welcome);
-}
-
-function sendOnlineChat(){
-  const input=document.getElementById('onlineChatInput');
-  const text=input.value.trim();if(!text)return;
-  if(onlineReplies<=0){showToast('❌ No replies left. WhatsApp: 03299240169');return;}
-  playClick();
-  const container=document.getElementById('onlineChatMessages');
-  const userMsg=document.createElement('div');userMsg.className='chat-msg user';
-  userMsg.innerHTML=`${text}<div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
-  container.appendChild(userMsg);container.scrollTop=container.scrollHeight;
-  input.value='';onlineReplies--;document.getElementById('onlineRepliesLeft').textContent=onlineReplies;
-  const typing=document.createElement('div');typing.className='chat-msg ai';
-  typing.innerHTML='<div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  typing.id='onlineTyping';container.appendChild(typing);container.scrollTop=container.scrollHeight;
-  setTimeout(()=>{
-    const ti=document.getElementById('onlineTyping');if(ti)ti.remove();
-    const idx=Math.min(7-onlineReplies,onlineResponses.length-1);
-    const aiMsg=document.createElement('div');aiMsg.className='chat-msg ai';
-    aiMsg.innerHTML=`${onlineResponses[idx]}<div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
-    container.appendChild(aiMsg);container.scrollTop=container.scrollHeight;
-  },1500);
-}
-
-function handleOnlineGalleryImage(event){
-  const file=event.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=(e)=>{
-    const container=document.getElementById('onlineChatMessages');
-    const msg=document.createElement('div');msg.className='chat-msg user';
-    msg.innerHTML=`<img src="${e.target.result}" class="gallery-preview" alt="Image"><div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
-    container.appendChild(msg);container.scrollTop=container.scrollHeight;
-    setTimeout(()=>{
-      const ai=document.createElement('div');ai.className='chat-msg ai';
-      ai.innerHTML=`Thanks for the screenshot! 📸 We'll review it and reply shortly. Anything else to add?<div class="msg-time">${new Date().toLocaleTimeString()}</div>`;
-      container.appendChild(ai);container.scrollTop=container.scrollHeight;
-    },1200);
+  document.getElementById('doLoginBtn').onclick = () => {
+    let email = document.getElementById('loginEmail').value.trim();
+    let pass = document.getElementById('loginPass').value;
+    let users = loadAllUsers();
+    if(users[email] && users[email].password === pass) {
+      currentUser = { email, name: users[email].name };
+      userData = users[email];
+      updateUIafterLogin();
+    } else { showToast('Invalid credentials'); }
   };
-  reader.readAsDataURL(file);
-}
+  document.getElementById('doSignupBtn').onclick = () => {
+    let name = document.getElementById('signupName').value.trim();
+    let email = document.getElementById('signupEmail').value.trim();
+    let pass = document.getElementById('signupPass').value;
+    if(!name || !email || pass.length<8) { showToast('Fill all fields, min 8 char pass'); return; }
+    let users = loadAllUsers();
+    if(users[email]) { showToast('Email exists'); return; }
+    let newUser = { name, password: pass, balance: 100, totalWinnings: 0, gamesPlayed: 0, history: [], lastSpin: 0 };
+    users[email] = newUser;
+    localStorage.setItem('nmm_users', JSON.stringify(users));
+    currentUser = { email, name };
+    userData = newUser;
+    updateUIafterLogin();
+    showToast('🎉 Welcome! +Rs 100 bonus!');
+  };
+  document.getElementById('logoutBtn').onclick = () => {
+    currentUser=null; userData=null;
+    document.getElementById('mainApp').style.display='none';
+    document.getElementById('authScreen').style.display='flex';
+    resetGameState();
+  };
+  document.getElementById('gotoSignup').onclick = () => { document.getElementById('loginPanel').style.display='none'; document.getElementById('signupPanel').style.display='block'; };
+  document.getElementById('gotoLogin').onclick = () => { document.getElementById('loginPanel').style.display='block'; document.getElementById('signupPanel').style.display='none'; };
+  document.getElementById('tabLoginBtn').onclick = () => { document.getElementById('loginPanel').style.display='block'; document.getElementById('signupPanel').style.display='none'; };
+  document.getElementById('tabSignupBtn').onclick = () => { document.getElementById('loginPanel').style.display='none'; document.getElementById('signupPanel').style.display='block'; };
 
-// ============================================================
-// MISC
-// ============================================================
-function toggleFaq(el){playClick();el.classList.toggle('open');}
-function claimBonus(amount,name){playClick();currentUser.balance+=amount;updateUI();updateTxHistory('+Rs '+amount+' ('+name+')',true);showToast('🎉 '+name+': Rs '+amount+' added!');}
-function copyReferral(){playClick();const code=document.getElementById('referralCode').textContent;navigator.clipboard.writeText(code).then(()=>showToast('📋 Referral code copied!')).catch(()=>showToast('Code: '+code));}
-function openWhatsApp(){playClick();window.open('https://wa.me/923299240169?text=Hello! I need help with Nine Men\'s Morris.','_blank');}
-function openTelegram(){playClick();window.open('https://t.me/+923299240169','_blank');}
-
-// ============================================================
-// INIT
-// ============================================================
-document.addEventListener('DOMContentLoaded',()=>{
-  const savedUser=localStorage.getItem('nmm_current_user');
-  if(savedUser){try{currentUser=JSON.parse(savedUser);totalGames=currentUser.games||0;totalWinnings=currentUser.winnings||0;enterGame();}catch(e){localStorage.removeItem('nmm_current_user');}}
-  initBoard();drawSpinWheel();
-  // Add piece pulse animation
-  const style=document.createElement('style');
-  style.textContent='@keyframes piecePulse{from{transform:scale(1);}to{transform:scale(1.12);}}';
-  document.head.appendChild(style);
-});
-
-window.addEventListener('beforeunload',()=>{
-  if(currentUser){
-    localStorage.setItem('nmm_current_user',JSON.stringify(currentUser));
-    saveUser();
-  }
-});
-</script>
-</body>
-</html>
+  // ---------- GAME MECHANICS ----------
+  function countPieces(who) { return board.filter(v=>v===who).length; }
+  function isMill(idx, who) { return MILLS.some(m => m.includes(idx) && m.every(i=>board[i]===who)); }
+  function getRemovable(opp) { let list = board.map((v,i)=> v===opp && !isMill(i,opp) ? i : -1).filter(i=>i>=0); if(!list.length) list = board.map((v,i)=> v===opp ? i : -1).filter(i=>i>=0); return list; }
+  function canMove(who) { let c = countPieces(who); if(c===3) return board.some(v=>v===null); return board.some((v,i)=> v===who && ADJ[i].some(j=>board[j]===null)); }
+  function afterMove() { updateUI(); if(checkGameEnd()) return; turn = (turn==='p') ? 'a' : 'p'; if(turn==='a' && gameActive && !waitRemove) setTimeout(aiMove, 300); updateUI(); }
+  function updateUI() { document.getElementById('playerPieces').innerText = (phase==='placing' ? 9-pPlaced : countPieces('p')); document.getElementById('aiPieces').innerText = (phase==='placing' ? 9-aPlaced : countPieces('a')); document.getElementById('phaseLabel').innerText = phase.toUpperCase(); document.getElementById('phaseDetail').innerText = phase; document.getElementById('turnText').innerText = turn==='p' ? 'Your turn' : 'AI thinking'; }
+  function checkGameEnd() { if(phase==='placing') return false; if(countPieces('p')<=2) { endGame('a'); return true; } if(countPieces('a')<=2) { endGame('p'); return true; } if(!canMove('p')) { endGame('a'); return true; } if(!canMove('a')) { endGame('p'); return true; } return false; }
+  function endGame(winner) { if(!gameActive) return; gameActive=false; let commission = Math.floor(currentBet*0.05); let net = currentBet - commission; if(winner==='p' && userData) { userData.balance += net; userData.totalWinnings += net; userData.gamesPlayed++; saveUserData(); showToast(`🏆 You win +Rs${net}`); document.getElementById('mainBalance').innerText = userData.balance; document.getElementById('profileBalance').innerText = userData.balance; document.getElementById('profileWins').innerText = userData.totalWinnings; document.getElementById('statWins').innerText = userData.totalWinnings; document.getElementById('statGames').innerText = userData.gamesPlayed; document.getElementById('modalIcon').innerText = '🏆'; document.getElementById('modalTitle').innerText = 'YOU WIN!'; document.getElementById('modalDetail').innerHTML = `+Rs ${net}<br>Commission: Rs ${commission}`; } else { if(winner==='a' && currentBet>0 && userData) { userData.balance = Math.max(0, userData.balance - currentBet); userData.gamesPlayed++; saveUserData(); document.getElementById('mainBalance').innerText = userData.balance; } document.getElementById('modalIcon').innerText = '💀'; document.getElementById('modalTitle').innerText = 'AI WINS'; document.getElementById('modalDetail').innerHTML = winner==='a' ? `You lost Rs ${currentBet}` : 'Game over'; } document.getElementById('resultModal').classList.add('open'); }
+  function resetGameState() { board.fill(null); phase='placing'; turn='p'; pPlaced=0; aPlaced=0; selectedIdx=null; gameActive=false; aiThinking=false; waitRemove=false; drawBoard(); updateUI(); document.getElementById('gameMessage').innerText = 'Press START GAME'; }
+  function startMatch() { if(!userData) return; if(currentBet > userData.balance) { showToast('Insufficient balance!'); return; } resetGameState(); gameActive=true; updateUI(); drawBoard(); document.getElementById('gameMessage').innerText = 'Place your pieces'; }
+  // AI dummy (random valid for simplicity)
+  function aiMove() { if(!gameActive || turn!=='a' || waitRemove) return; aiThinking=true; setTimeout(()=>{ let moves=[]; if(phase==='placing' && aPlaced<9) { for(let i=0;i<24;i++) if(!board[i]) moves.push({type:'place',idx:i}); } else { let fly=countPieces('a')===3; for(let f=0;f<24;f++) if(board[f]==='a') { let targets=fly ? board.map((_,j)=>j).filter(j=>!board[j]) : ADJ[f].filter(j=>!board[j]); for(let t of targets) moves.push({type:'move',from:f,to:t}); } } if(moves.length){ let mv = moves[Math.floor(Math.random()*moves.length)]; if(mv.type==='place'){ board[mv.idx]='a'; aPlaced++; if(isMill(mv.idx,'a')) { let rem=getRemovable('p'); if(rem.length){ waitRemove=true; removeFor='a'; let target=rem[0]; board[target]=null; waitRemove=false; } } } else { board[mv.from]=null; board[mv.to]='a'; if(isMill(mv.to,'a')){ let rem=getRemovable('p'); if(rem.length){ waitRemove=true; removeFor='a'; let target=rem[0]; board[target]=null; waitRemove=false; } } } if(aPlaced>=9 && pPlaced>=9) phase='moving'; afterMove(); } aiThinking=false; updateUI(); drawBoard(); }, 200); }
+  // handle click canvas
+  function handleCanvasClick(e) { if(!gameActive || turn!=='p' || aiThinking || waitRemove) return; let rect=document.getElementById('gameCanvas').getBoundingClientRect(); let scale=480/rect.width; let mx=(e.clientX-rect.left)*scale, my=(e.clientY-rect.top)*scale; let minDist=25, idx=-1; POINTS.forEach((p,i)=>{ let d=Math.hypot(p.x-mx, p.y-my); if(d<minDist){ minDist=d; idx=i; } }); if(idx===-1) return; if(phase==='placing' && board[idx]===null) { board[idx]='p'; pPlaced++; if(isMill(idx,'p')){ let rem=getRemovable('a'); if(rem.length){ waitRemove=true; removeFor='p'; board[rem[0]]=null; waitRemove=false; } } if(pPlaced>=9 && aPlaced>=9) phase='moving'; afterMove(); drawBoard(); } else if(phase==='moving'){ if
